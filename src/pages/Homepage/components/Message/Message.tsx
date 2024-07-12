@@ -1,30 +1,67 @@
+import { useState, useEffect } from "react";
 import Callout from "../../../../components/Callout/Callout.tsx";
 import EllipsisLoading from "../../../../components/Loading/EllipsisLoading.tsx";
 import { MessageComponent, MessageProfileComponent } from "./Message.style.ts";
 
 const Message = ({
-  children,
+  content,
   className,
   $sender,
+  isInputting,
+  isLoading,
+  timestamp,
+  isNew,
+  scrollBottom,
   ...props
 }: {
-  children?: React.ReactNode;
+  content: string;
   style?: React.CSSProperties;
   className?: string;
   $sender?: string;
+  isInputting?: boolean;
+  isLoading?: boolean;
+  timestamp?: string;
+  isNew?: boolean;
+  scrollBottom?: () => void;
   [key: string]: any;
 }) => {
+  const [displayedContent, setDisplayedContent] = useState(
+    isNew ? "" : content
+  );
+
+  useEffect(() => {
+    if (isLoading) {
+      setDisplayedContent("...");
+      return;
+    }
+
+    if (
+      isNew &&
+      $sender === "partner" &&
+      displayedContent.length < content.length
+    ) {
+      const timer = setTimeout(() => {
+        setDisplayedContent(content.slice(0, displayedContent.length + 1));
+        if (scrollBottom) scrollBottom();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [content, displayedContent, isLoading, $sender, scrollBottom, isNew]);
+
   return (
-    //"message-container user-container"
     <MessageComponent className={className} $sender={$sender}>
-      <MessageProfileComponent>
+      <MessageProfileComponent $sender={$sender}>
         <span className="emoji">{$sender === "user" ? "🐹" : "💬"}</span>
-        <span className="timestamp">오전 10:00</span>
+        <span className="timestamp">{timestamp}</span>
       </MessageProfileComponent>
-      <Callout $sender={$sender} {...props}>
-        {children}
-      </Callout>
-      <EllipsisLoading $sender={$sender} />
+
+      {isInputting || isLoading ? (
+        <EllipsisLoading $sender={$sender} />
+      ) : (
+        <Callout $sender={$sender} {...props}>
+          {$sender === "user" ? content : displayedContent}
+        </Callout>
+      )}
     </MessageComponent>
   );
 };

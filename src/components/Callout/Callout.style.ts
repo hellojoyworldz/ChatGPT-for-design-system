@@ -7,6 +7,7 @@ export const CalloutComponent = styled.p<{ $sender?: string; as?: string }>`
   max-width: 70%;
   color: #333;
   line-height: 1.5;
+  white-space: pre-wrap;
   border: 1px solid #333;
   border-radius: 18px;
   ${(props) => {

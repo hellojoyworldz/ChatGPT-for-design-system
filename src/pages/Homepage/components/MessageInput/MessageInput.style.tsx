@@ -11,7 +11,7 @@ export const MessageInputComponent = styled.div`
     margin: auto;
   }
 
-  button {
+  && .send {
     position: absolute;
     right: 6px;
     bottom: 6px;
@@ -21,11 +21,11 @@ export const MessageInputComponent = styled.div`
     border: 1px solid #333;
     border-radius: 52px;
     cursor: pointer;
-  }
 
-  button:disabled {
-    background: #ddd;
-    border: 0;
-    cursor: auto;
+    &:disabled {
+      background: #ddd;
+      border: 0;
+      cursor: auto;
+    }
   }
 `;
