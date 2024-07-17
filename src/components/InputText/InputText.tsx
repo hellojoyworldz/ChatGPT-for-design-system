@@ -1,4 +1,17 @@
-import { InputTextComponent } from "./InputText.style.ts";
+import styled from "styled-components";
+import BoxComponent from "../BoxComponent.tsx";
+
+export const InputTextComponent = styled(BoxComponent)`
+  padding: 10px 16px;
+  width: 100%;
+  height: 52px;
+  font-size: 1em;
+  line-height: 1;
+  background: #fff;
+  border: 1px solid #333;
+  border-radius: 48px;
+  box-sizing: border-box;
+`;
 
 const InputText = ({
   ...props
@@ -11,7 +24,12 @@ const InputText = ({
   buttonMessage?: string;
   [key: string]: any;
 }) => {
-  return <InputTextComponent type="text" {...props} />;
+  const sendProps = {
+    as: "input",
+    type: "text",
+    ...props,
+  };
+  return <InputTextComponent {...sendProps} />;
 };
 
 export default InputText;
