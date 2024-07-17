@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import BoxComponent from "../BoxComponent.tsx";
+import { HTMLAttributes } from "react";
 
 export const InputTextComponent = styled(BoxComponent)`
   padding: 10px 16px;
@@ -13,17 +14,7 @@ export const InputTextComponent = styled(BoxComponent)`
   box-sizing: border-box;
 `;
 
-const InputText = ({
-  ...props
-}: {
-  placeholder?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
-  buttonMessage?: string;
-  [key: string]: any;
-}) => {
+const InputText = ({ ...props }: HTMLAttributes<HTMLInputElement>) => {
   const sendProps = {
     as: "input",
     type: "text",
