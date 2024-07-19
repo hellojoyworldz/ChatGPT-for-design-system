@@ -40,7 +40,6 @@ const Homepage = () => {
       setMessages(
         JSON.parse(savedMessages).map((msg: MessageProps) => ({
           ...msg,
-          isNew: false,
         })),
       );
     }
@@ -78,7 +77,6 @@ const Homepage = () => {
           hour: "2-digit",
           minute: "2-digit",
         }),
-        isNew: true,
       };
 
       setMessages((prev) => [...prev, newMessage]);
