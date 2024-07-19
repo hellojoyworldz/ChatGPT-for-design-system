@@ -1,20 +1,20 @@
 import styled from "styled-components";
 
-export const MessageComponent = styled.div<{ $sender?: string }>`
+export const MessageComponent = styled.div<{ $role?: string }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 15px;
-  ${(props) => (props.$sender === "user" ? ` align-items: flex-end;` : ``)}
+  ${(props) => (props.$role === "user" ? ` align-items: flex-end;` : ``)}
 `;
 
-export const MessageProfileComponent = styled.div<{ $sender?: string }>`
+export const MessageProfileComponent = styled.div<{ $role?: string }>`
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 
   ${(props) => {
-    if (props.$sender === "user") {
+    if (props.$role === "user") {
       return `flex-direction: row-reverse;`;
     }
   }}

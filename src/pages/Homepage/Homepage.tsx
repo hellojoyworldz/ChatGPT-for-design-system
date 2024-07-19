@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { chatResponse } from "../../utils/api.ts";
+import { MessageProps } from "../../types/type.ts";
 import {
   HomepageComponent,
   HomepageHeader,
@@ -10,12 +11,6 @@ import {
 import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 
-interface MessageProps {
-  sender: "user" | "partner";
-  content: string;
-  timestamp: string;
-  isNew: boolean;
-}
 const Homepage = () => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [input, setInput] = useState<string>("");
@@ -72,18 +67,23 @@ const Homepage = () => {
   }, []);
 
   // setMessages에 message를 추가하는 함수
-  const makeSetMessage = (sender: "user" | "partner", content: string) => {
-    const newMessage: MessageProps = {
-      sender,
-      content,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      isNew: true,
-    };
-    setMessages((prev) => [...prev, newMessage]);
-  };
+  const makeSetMessage = useCallback(
+    (role: "user" | "assistant", content: string) => {
+      const newMessage: MessageProps = {
+        role,
+        content,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        isNew: true,
+      };
+
+      setMessages((prev) => [...prev, newMessage]);
+      return newMessage;
+    },
+    [],
+  );
 
   // 입력한 메세지를 전송하고 응답을 받아 messages에 추가
   const handleSendMessage = useCallback(
@@ -99,24 +99,24 @@ const Homepage = () => {
       setInputting(false);
 
       if (filterInput && !isLoading) {
-        makeSetMessage("user", filterInput);
+        const newUserMessage = makeSetMessage("user", filterInput);
         setLoading(true);
-      }
 
-      try {
-        const response = await chatResponse(filterInput);
-        makeSetMessage("partner", response);
-      } catch (error) {
-        console.log("send message error", error);
-        makeSetMessage(
-          "partner",
-          "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다.",
-        );
-      } finally {
-        setLoading(false);
+        try {
+          const response = await chatResponse([...messages, newUserMessage]);
+          makeSetMessage("assistant", response);
+        } catch (error) {
+          console.log("send message error", error);
+          makeSetMessage(
+            "assistant",
+            "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다.",
+          );
+        } finally {
+          setLoading(false);
+        }
       }
     },
-    [isLoading],
+    [isLoading, messages],
   );
 
   return (
@@ -131,7 +131,7 @@ const Homepage = () => {
         {messages.map((message, idx) => (
           <Message
             key={idx}
-            $sender={message.sender}
+            $role={message.role}
             content={message.content}
             timestamp={message.timestamp}
             isNew={message.isNew}
@@ -139,14 +139,10 @@ const Homepage = () => {
           />
         ))}
         {isInputting && (
-          <Message
-            $sender="user"
-            isInputting={isInputting}
-            content={"입력중"}
-          />
+          <Message $role="user" isInputting={isInputting} content={"입력중"} />
         )}
         {isLoading && (
-          <Message $sender="partner" isLoading={isLoading} content={"로딩중"} />
+          <Message $role="system" isLoading={isLoading} content={"로딩중"} />
         )}
         <div ref={messageEndRef} />
       </HomepageMessage>
@@ -158,7 +154,7 @@ const Homepage = () => {
             onChange={(e) => handleInputChange(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey && !e.altKey) {
-                if (e.isComposing || e.keyCode === 229) return;
+                if (e.keyCode === 229) return;
                 e.preventDefault();
                 handleSendMessage(input);
               }
@@ -169,7 +165,8 @@ const Homepage = () => {
             className="send"
             disabled={isLoading}
           >
-            {isLoading ? "전송중..." : "보내기"}
+            보내기
+            {/*{isLoading ? "전송중..." : "보내기"}*/}
           </button>
         </MessageInput>
       </HomepageInput>

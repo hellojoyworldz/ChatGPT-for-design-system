@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const HomepageComponent = styled.div<{ as?: string }>`
+export const HomepageComponent = styled.div`
   padding-bottom: calc(6em + 52px);
   height: 100%;
   overflow-y: auto;
   box-sizing: border-box;
 `;
 
-export const HomepageHeader = styled.header<{ as?: string }>`
+export const HomepageHeader = styled.header`
   position: sticky;
   top: 0;
   left: 0;
@@ -20,7 +20,7 @@ export const HomepageHeader = styled.header<{ as?: string }>`
   }
 `;
 
-export const HomepageMessage = styled.div<{ as?: string }>`
+export const HomepageMessage = styled.div`
   max-width: 800px;
   margin: auto;
   padding: 0 1em;

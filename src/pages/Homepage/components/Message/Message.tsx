@@ -5,7 +5,7 @@ import EllipsisLoading from "../../../../components/EllipsisLoading.tsx";
 
 interface MessageProps extends HTMLAttributes<HTMLElement> {
   content: string;
-  $sender?: string;
+  $role?: string;
   isInputting?: boolean;
   isLoading?: boolean;
   timestamp?: string;
@@ -16,7 +16,7 @@ interface MessageProps extends HTMLAttributes<HTMLElement> {
 const Message = ({
   content,
   className,
-  $sender,
+  $role,
   isInputting,
   isLoading,
   timestamp,
@@ -35,7 +35,7 @@ const Message = ({
 
     if (
       isNew &&
-      $sender === "partner" &&
+      $role === "assistant" &&
       displayedContent.length < content.length
     ) {
       const timer = setTimeout(() => {
@@ -44,20 +44,20 @@ const Message = ({
       }, 50);
       return () => clearTimeout(timer);
     }
-  }, [content, displayedContent, isLoading, $sender, scrollBottom, isNew]);
+  }, [content, displayedContent, isLoading, $role, scrollBottom, isNew]);
 
   return (
-    <MessageComponent className={className} $sender={$sender}>
-      <MessageProfileComponent $sender={$sender}>
-        <span className="emoji">{$sender === "user" ? "🐹" : "💬"}</span>
+    <MessageComponent className={className} $role={$role}>
+      <MessageProfileComponent $role={$role}>
+        <span className="emoji">{$role === "user" ? "🐹" : "💬"}</span>
         <span className="timestamp">{timestamp}</span>
       </MessageProfileComponent>
 
       {isInputting || isLoading ? (
-        <EllipsisLoading $sender={$sender} />
+        <EllipsisLoading $role={$role} />
       ) : (
-        <Callout $sender={$sender}>
-          {$sender === "user" ? content : displayedContent}
+        <Callout $role={$role}>
+          {$role === "user" ? content : displayedContent}
         </Callout>
       )}
     </MessageComponent>

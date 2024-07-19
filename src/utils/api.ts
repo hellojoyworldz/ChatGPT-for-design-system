@@ -1,32 +1,37 @@
 import OpenAI from "openai";
+import { promptDesignSystem } from "./prompt";
+import { MessageProps } from "../types/type.ts";
 
 const openai = new OpenAI({
   apiKey: import.meta.env["VITE_OPEN_AI_KEY"],
   dangerouslyAllowBrowser: true,
 });
 
-export const chatResponse = async (message: string): Promise<string> => {
+export const chatResponse = async (
+  messages: MessageProps[],
+): Promise<string> => {
+  const promptMessage: MessageProps = {
+    role: "system",
+    content: promptDesignSystem,
+  };
+
+  const chattingMessages =
+    messages[0].role === "system" ? messages : [promptMessage, ...messages];
+
   try {
     const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-4-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "너는 디자인 시스템에 특화되어 있어. " +
-            "디자인 토큰, 구성 요소 라이브러리, 스타일 가이드, 웹/앱 전반에 걸쳐 " +
-            "일관성을 유지하기 위한 모범 사례와 같은 주제에 대한 지침을 제공해줘.",
-        },
-        {
-          role: "user",
-          content: message,
-        },
-      ],
+      model: "gpt-4o-mini",
+      messages: chattingMessages,
+      top_p: 1,
+      temperature: 1,
+      presence_penalty: 0,
+      frequency_penalty: 0,
+      n: 1,
     });
 
     return (
       chatCompletion.choices[0].message?.content ||
-      "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다."
+      "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다."
     );
   } catch (error) {
     console.log("response error", error);
