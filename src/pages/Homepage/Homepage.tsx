@@ -13,9 +13,11 @@ import InputText from "../../components/InputText.tsx";
 
 const Homepage = () => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isInputting, setInputting] = useState<boolean>(false);
+  const [isStreaming, setStreaming] = useState<boolean>(false);
   const [inputtingTimer, setInputtingTimer] = useState<NodeJS.Timeout | null>(
     null,
   );
@@ -103,7 +105,14 @@ const Homepage = () => {
         setLoading(true);
 
         try {
-          const response = await chatResponse([...messages, newUserMessage]);
+          setStreamingMessage("");
+          const response = await chatResponse(
+            [...messages, newUserMessage],
+            setStreamingMessage,
+            setStreaming,
+            setLoading,
+          );
+
           makeSetMessage("assistant", response);
         } catch (error) {
           console.log("send message error", error);
@@ -116,7 +125,7 @@ const Homepage = () => {
         }
       }
     },
-    [isLoading, messages],
+    [isLoading, messages, makeSetMessage],
   );
 
   return (
@@ -134,16 +143,18 @@ const Homepage = () => {
             $role={message.role}
             content={message.content}
             timestamp={message.timestamp}
-            isNew={message.isNew}
-            scrollBottom={scrollBottom}
           />
         ))}
+        {isStreaming && (
+          <Message $role="assistant" content={streamingMessage} />
+        )}
+        {isLoading && (
+          <Message $role="assistant" isLoading={isLoading} content={"로딩중"} />
+        )}
         {isInputting && (
           <Message $role="user" isInputting={isInputting} content={"입력중"} />
         )}
-        {isLoading && (
-          <Message $role="system" isLoading={isLoading} content={"로딩중"} />
-        )}
+
         <div ref={messageEndRef} />
       </HomepageMessage>
       <HomepageInput>

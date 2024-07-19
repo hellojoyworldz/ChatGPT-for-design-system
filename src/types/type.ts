@@ -3,4 +3,5 @@ export interface MessageProps {
   content: string;
   timestamp?: string;
   isNew?: boolean;
+  isStreaming?: boolean;
 }

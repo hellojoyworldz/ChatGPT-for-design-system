@@ -1,4 +1,4 @@
-import { useState, useEffect, HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import { MessageComponent, MessageProfileComponent } from "./Message.style.ts";
 import Callout from "../../../../components/Callout.tsx";
 import EllipsisLoading from "../../../../components/EllipsisLoading.tsx";
@@ -9,8 +9,6 @@ interface MessageProps extends HTMLAttributes<HTMLElement> {
   isInputting?: boolean;
   isLoading?: boolean;
   timestamp?: string;
-  isNew?: boolean;
-  scrollBottom?: () => void;
 }
 
 const Message = ({
@@ -20,32 +18,7 @@ const Message = ({
   isInputting,
   isLoading,
   timestamp,
-  isNew,
-  scrollBottom,
 }: MessageProps) => {
-  const [displayedContent, setDisplayedContent] = useState(
-    isNew ? "" : content,
-  );
-
-  useEffect(() => {
-    if (isLoading) {
-      setDisplayedContent("...");
-      return;
-    }
-
-    if (
-      isNew &&
-      $role === "assistant" &&
-      displayedContent.length < content.length
-    ) {
-      const timer = setTimeout(() => {
-        setDisplayedContent(content.slice(0, displayedContent.length + 1));
-        if (scrollBottom) scrollBottom();
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [content, displayedContent, isLoading, $role, scrollBottom, isNew]);
-
   return (
     <MessageComponent className={className} $role={$role}>
       <MessageProfileComponent $role={$role}>
@@ -56,9 +29,7 @@ const Message = ({
       {isInputting || isLoading ? (
         <EllipsisLoading $role={$role} />
       ) : (
-        <Callout $role={$role}>
-          {$role === "user" ? content : displayedContent}
-        </Callout>
+        <Callout $role={$role}>{content}</Callout>
       )}
     </MessageComponent>
   );

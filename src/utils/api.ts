@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { promptDesignSystem } from "./prompt";
 import { MessageProps } from "../types/type.ts";
+import { Dispatch, SetStateAction } from "react";
 
 const openai = new OpenAI({
   apiKey: import.meta.env["VITE_OPEN_AI_KEY"],
@@ -9,6 +10,9 @@ const openai = new OpenAI({
 
 export const chatResponse = async (
   messages: MessageProps[],
+  setStreamingMessage: Dispatch<SetStateAction<string>>,
+  setStreaming: Dispatch<SetStateAction<boolean>>,
+  setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<string> => {
   const promptMessage: MessageProps = {
     role: "system",
@@ -27,11 +31,22 @@ export const chatResponse = async (
       presence_penalty: 0,
       frequency_penalty: 0,
       n: 1,
+      stream: true,
     });
 
+    let chunkContent = "";
+    setStreaming(true);
+
+    for await (const chunk of chatCompletion) {
+      const content = chunk.choices[0]?.delta?.content || "";
+      chunkContent += content;
+      setStreamingMessage(chunkContent);
+      setLoading(false);
+    }
+
+    setStreaming(false);
     return (
-      chatCompletion.choices[0].message?.content ||
-      "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다."
+      chunkContent || "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다."
     );
   } catch (error) {
     console.log("response error", error);
