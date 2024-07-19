@@ -1,7 +1,8 @@
+import { ElementType, HTMLAttributes } from "react";
 import styled from "styled-components";
+import BoxComponent from "./BoxComponent.tsx";
 
-const EllipsisLoadingComponent = styled.div`
-  as: ${(props) => props.as};
+const EllipsisLoadingComponent = styled(BoxComponent)<{ $sender?: string }>`
   display: inline-block;
   margin: 0 10px;
   padding: 5px 10px;
@@ -48,18 +49,15 @@ const EllipsisLoadingComponent = styled.div`
     }
   }
 `;
-const EllipsisLoading = ({
-  as,
-  className,
-  ...props
-}: {
-  as?: React.ElementType;
-  className?: string;
-  style?: React.CSSProperties;
-  [key: string]: any;
-}) => {
+
+interface EllipsisLoadingProps extends HTMLAttributes<HTMLElement> {
+  as?: ElementType;
+  $sender?: string;
+}
+
+const EllipsisLoading = ({ as = "div", ...props }: EllipsisLoadingProps) => {
   return (
-    <EllipsisLoadingComponent as={as} className={className} {...props}>
+    <EllipsisLoadingComponent as={as} {...props}>
       <span></span>
       <span></span>
       <span></span>

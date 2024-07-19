@@ -1,13 +1,14 @@
-import Message from "./components/Message/Message.tsx";
-import MessageInput from "./components/MessageInput/MessageInput.tsx";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { chatResponse } from "../../utils/api.ts";
 import {
   HomepageComponent,
   HomepageHeader,
   HomepageMessage,
   HomepageInput,
+  MessageInput,
 } from "./Homepage.style.ts";
-import { chatResponse } from "../../utils/api.ts";
-import { useCallback, useEffect, useRef, useState } from "react";
+import Message from "./components/Message/Message.tsx";
+import InputText from "../../components/InputText.tsx";
 
 interface MessageProps {
   sender: "user" | "partner";
@@ -15,13 +16,13 @@ interface MessageProps {
   timestamp: string;
   isNew: boolean;
 }
-const Homepage: React.FC = () => {
+const Homepage = () => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [input, setInput] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isInputting, setInputting] = useState<boolean>(false);
   const [inputtingTimer, setInputtingTimer] = useState<NodeJS.Timeout | null>(
-    null
+    null,
   );
   const messageEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +44,7 @@ const Homepage: React.FC = () => {
         JSON.parse(savedMessages).map((msg: MessageProps) => ({
           ...msg,
           isNew: false,
-        }))
+        })),
       );
     }
   }, []);
@@ -61,7 +62,7 @@ const Homepage: React.FC = () => {
       if (inputtingTimer) clearTimeout(inputtingTimer);
       setInputtingTimer(setTimeout(() => setInputting(false), 500));
     },
-    [inputtingTimer]
+    [inputtingTimer],
   );
 
   // messages를 삭제하고 localStorage를 초기화
@@ -109,13 +110,13 @@ const Homepage: React.FC = () => {
         console.log("send message error", error);
         makeSetMessage(
           "partner",
-          "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다."
+          "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다.",
         );
       } finally {
         setLoading(false);
       }
     },
-    [isLoading]
+    [isLoading],
   );
 
   return (
@@ -150,15 +151,21 @@ const Homepage: React.FC = () => {
         <div ref={messageEndRef} />
       </HomepageMessage>
       <HomepageInput>
-        <MessageInput
-          placeholder={"메세지를 입력하세요"}
-          value={input}
-          onChange={(e) => handleInputChange(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSendMessage(input)}
-          onClick={() => handleSendMessage(input)}
-          disabled={isLoading}
-          buttonMessage={isLoading ? "전송중..." : "보내기"}
-        />
+        <MessageInput>
+          <InputText
+            placeholder={"메세지를 입력하세요"}
+            value={input}
+            onChange={(e) => handleInputChange(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSendMessage(input)}
+          />
+          <button
+            onClick={() => handleSendMessage(input)}
+            className="send"
+            disabled={isLoading}
+          >
+            {isLoading ? "전송중..." : "보내기"}
+          </button>
+        </MessageInput>
       </HomepageInput>
     </HomepageComponent>
   );

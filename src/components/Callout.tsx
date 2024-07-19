@@ -1,7 +1,8 @@
+import { HTMLAttributes, ElementType } from "react";
 import styled from "styled-components";
+import BoxComponent from "./BoxComponent.tsx";
 
-export const CalloutComponent = styled.p<{ $sender?: string; as?: string }>`
-  as: ${(props) => props.as};
+const CalloutComponent = styled(BoxComponent)<{ $sender?: string }>`
   margin: 0;
   padding: 10px;
   max-width: 70%;
@@ -29,3 +30,17 @@ export const CalloutComponent = styled.p<{ $sender?: string; as?: string }>`
     }
   }}
 `;
+
+interface CalloutProps extends HTMLAttributes<HTMLElement> {
+  as?: ElementType;
+  $sender?: string;
+}
+const Callout = ({ as = "div", children, ...props }: CalloutProps) => {
+  return (
+    <CalloutComponent as={as} {...props}>
+      {children}
+    </CalloutComponent>
+  );
+};
+
+export default Callout;

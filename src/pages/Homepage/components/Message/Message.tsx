@@ -1,7 +1,17 @@
-import { useState, useEffect } from "react";
-import Callout from "../../../../components/Callout/Callout.tsx";
-import EllipsisLoading from "../../../../components/Loading/EllipsisLoading.tsx";
+import { useState, useEffect, HTMLAttributes } from "react";
 import { MessageComponent, MessageProfileComponent } from "./Message.style.ts";
+import Callout from "../../../../components/Callout.tsx";
+import EllipsisLoading from "../../../../components/EllipsisLoading.tsx";
+
+interface MessageProps extends HTMLAttributes<HTMLElement> {
+  content: string;
+  $sender?: string;
+  isInputting?: boolean;
+  isLoading?: boolean;
+  timestamp?: string;
+  isNew?: boolean;
+  scrollBottom?: () => void;
+}
 
 const Message = ({
   content,
@@ -12,21 +22,9 @@ const Message = ({
   timestamp,
   isNew,
   scrollBottom,
-  ...props
-}: {
-  content: string;
-  style?: React.CSSProperties;
-  className?: string;
-  $sender?: string;
-  isInputting?: boolean;
-  isLoading?: boolean;
-  timestamp?: string;
-  isNew?: boolean;
-  scrollBottom?: () => void;
-  [key: string]: any;
-}) => {
+}: MessageProps) => {
   const [displayedContent, setDisplayedContent] = useState(
-    isNew ? "" : content
+    isNew ? "" : content,
   );
 
   useEffect(() => {
@@ -58,7 +56,7 @@ const Message = ({
       {isInputting || isLoading ? (
         <EllipsisLoading $sender={$sender} />
       ) : (
-        <Callout $sender={$sender} {...props}>
+        <Callout $sender={$sender}>
           {$sender === "user" ? content : displayedContent}
         </Callout>
       )}
