@@ -10,13 +10,23 @@ export const HomepageComponent = styled.div`
 export const HomepageHeader = styled.header`
   position: sticky;
   top: 0;
-  left: 0;
+  margin: auto;
   padding: 2em;
+  max-width: 800px;
   background: linear-gradient(0deg, transparent, #fffda6);
   && h1 {
     margin: 0;
     font-size: 2em;
     text-align: center;
+  }
+
+  && .reset {
+    display: block;
+    margin: 0 0 0 auto;
+    padding: 0.5em 1em;
+    border: 0;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
   }
 `;
 
