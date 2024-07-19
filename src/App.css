@@ -24,8 +24,8 @@ body{
     margin-left: 2px;
     background-color: white;
     animation: blink 0.7s infinite;
-
 }
+
 @keyframes blink {
     0% {
         opacity: 0;
