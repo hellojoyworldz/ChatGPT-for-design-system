@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { chatResponse } from "../../utils/api.ts";
 import {
   HomepageComponent,
@@ -156,7 +156,13 @@ const Homepage = () => {
             placeholder={"메세지를 입력하세요"}
             value={input}
             onChange={(e) => handleInputChange(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSendMessage(input)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+                if (e.isComposing || e.keyCode === 229) return;
+                e.preventDefault();
+                handleSendMessage(input);
+              }
+            }}
           />
           <button
             onClick={() => handleSendMessage(input)}
