@@ -1,7 +1,7 @@
 import "./App.css";
-
+import Homepage from "./pages/Homepage/Homepage.tsx";
 function App() {
-  return <></>;
+  return <Homepage />;
 }
 
 export default App;
