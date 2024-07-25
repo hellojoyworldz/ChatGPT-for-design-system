@@ -1,22 +1,27 @@
 import styled from "styled-components";
 
-export const HomepageComponent = styled.div`
-  padding-bottom: calc(6em + 52px);
+export const ChatComponent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   overflow-y: auto;
   box-sizing: border-box;
 `;
 
-export const HomepageHeader = styled.header`
+export const ChatHeader = styled.header`
   position: sticky;
   top: 0;
-  margin: auto;
-  padding: 2em;
+  margin: 0 auto;
+  padding: 3em 1em 2em 1em;
+  width: 100%;
   max-width: 800px;
   background: linear-gradient(0deg, transparent, #fffda6);
+  box-sizing: border-box;
+
   && h1 {
     margin: 0;
-    font-size: 2em;
+    font-size: 1.8rem;
     text-align: center;
   }
 
@@ -30,17 +35,17 @@ export const HomepageHeader = styled.header`
   }
 `;
 
-export const HomepageMessage = styled.div`
+export const ChatMessage = styled.div`
   max-width: 800px;
   margin: auto;
   padding: 0 1em;
 `;
 
-export const HomepageInput = styled.div`
-  position: fixed;
+export const ChatInput = styled.div`
+  position: sticky;
   left: 0;
   bottom: 0;
-  padding: 6em 2em 2em 2em;
+  padding: 1em;
   width: 100%;
   background: linear-gradient(0deg, #fff 55%, transparent);
   box-sizing: border-box;
