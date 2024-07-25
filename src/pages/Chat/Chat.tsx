@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { chatResponse } from "../../utils/api.ts";
 import { MessageProps } from "../../types/type.ts";
 import {
@@ -11,7 +11,7 @@ import {
 import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 
-const Chat = ({ as }) => {
+const Chat = ({ as }: { as?: React.ElementType }) => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [input, setInput] = useState<string>("");
