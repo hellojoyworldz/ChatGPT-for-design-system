@@ -1,7 +1,8 @@
 import "./App.css";
-import Homepage from "./pages/Homepage/Homepage.tsx";
+import Chat from "./pages/Chat/Chat.tsx";
+
 function App() {
-  return <Homepage />;
+  return <Chat />;
 }
 
 export default App;
