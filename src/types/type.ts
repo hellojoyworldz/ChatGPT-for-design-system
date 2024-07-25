@@ -4,3 +4,7 @@ export interface MessageProps {
   timestamp?: string;
   isStreaming?: boolean;
 }
+
+export interface LangType {
+  lang?: "en" | "ko";
+}
