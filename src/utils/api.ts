@@ -13,6 +13,7 @@ export const chatResponse = async (
   setStreamingMessage: Dispatch<SetStateAction<string>>,
   setStreaming: Dispatch<SetStateAction<boolean>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
+  isLoading: boolean,
 ): Promise<string> => {
   const promptMessage: MessageProps = {
     role: "system",
@@ -41,7 +42,7 @@ export const chatResponse = async (
       const content = chunk.choices[0]?.delta?.content || "";
       chunkContent += content;
       setStreamingMessage(chunkContent);
-      setLoading(false);
+      if (isLoading) setLoading(false);
     }
 
     setStreaming(false);

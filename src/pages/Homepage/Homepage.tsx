@@ -31,7 +31,7 @@ const Homepage = () => {
   // 대화창 하단으로 이동
   useEffect(() => {
     scrollBottom();
-  }, [messages, input]);
+  }, [messages, streamingMessage, input]);
 
   // localStorage에 저장된 messages 가져오기
   useEffect(() => {
@@ -109,6 +109,7 @@ const Homepage = () => {
             setStreamingMessage,
             setStreaming,
             setLoading,
+            isLoading,
           );
 
           makeSetMessage("assistant", response);
