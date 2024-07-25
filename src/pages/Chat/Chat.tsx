@@ -130,10 +130,12 @@ const Chat = ({ as }) => {
   return (
     <ChatComponent as={as}>
       <ChatHeader>
-        <h1>🎨 ChatGPT for design system 🖌</h1>
-        <button onClick={handleReset} className="reset">
-          초기화
-        </button>
+        <div className="in">
+          <h1>🎨 ChatGPT for design system 🖌</h1>
+          <button onClick={handleReset} className="reset">
+            초기화
+          </button>
+        </div>
       </ChatHeader>
       <section>
         <ChatMessage>

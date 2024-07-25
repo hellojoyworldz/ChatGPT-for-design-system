@@ -12,12 +12,15 @@ export const ChatComponent = styled.div`
 export const ChatHeader = styled.header`
   position: sticky;
   top: 0;
-  margin: 0 auto;
   padding: 3em 1em 2em 1em;
   width: 100%;
-  max-width: 800px;
   background: linear-gradient(0deg, transparent, #fffda6);
   box-sizing: border-box;
+
+  .in {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 
   && h1 {
     margin: 0;
