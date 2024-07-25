@@ -2,16 +2,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { chatResponse } from "../../utils/api.ts";
 import { MessageProps } from "../../types/type.ts";
 import {
-  HomepageComponent,
-  HomepageHeader,
-  HomepageMessage,
-  HomepageInput,
+  ChatComponent,
+  ChatHeader,
+  ChatMessage,
+  ChatInput,
   MessageInput,
-} from "./Homepage.style.ts";
+} from "./Chat.style.ts";
 import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 
-const Homepage = () => {
+const Chat = ({ as }) => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [input, setInput] = useState<string>("");
@@ -128,60 +128,77 @@ const Homepage = () => {
   );
 
   return (
-    <HomepageComponent>
-      <HomepageHeader>
-        <h1>🎨 ChatGPT for design system 🖌</h1>
-        <button onClick={handleReset} className="reset">
-          초기화
-        </button>
-      </HomepageHeader>
-      <HomepageMessage>
-        {messages.map((message, idx) => (
-          <Message
-            key={idx}
-            $role={message.role}
-            content={message.content}
-            timestamp={message.timestamp}
-          />
-        ))}
-        {isStreaming && (
-          <Message $role="assistant" content={streamingMessage} />
-        )}
-        {isLoading && (
-          <Message $role="assistant" isLoading={isLoading} content={"로딩중"} />
-        )}
-        {isInputting && (
-          <Message $role="user" isInputting={isInputting} content={"입력중"} />
-        )}
-
-        <div ref={messageEndRef} />
-      </HomepageMessage>
-      <HomepageInput>
-        <MessageInput>
-          <InputText
-            placeholder={"메세지를 입력하세요"}
-            value={input}
-            onChange={(e) => handleInputChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey && !e.altKey) {
-                if (e.keyCode === 229) return;
-                e.preventDefault();
-                handleSendMessage(input);
-              }
-            }}
-          />
-          <button
-            onClick={() => handleSendMessage(input)}
-            className="send"
-            disabled={isLoading}
-          >
-            보내기
-            {/*{isLoading ? "전송중..." : "보내기"}*/}
+    <ChatComponent as={as}>
+      <ChatHeader>
+        <div className="in">
+          <h1>🎨 ChatGPT for design system 🖌</h1>
+          <button onClick={handleReset} className="reset">
+            초기화
           </button>
-        </MessageInput>
-      </HomepageInput>
-    </HomepageComponent>
+        </div>
+      </ChatHeader>
+      <section>
+        <ChatMessage>
+          {messages.map((message, idx) => (
+            <Message
+              key={idx}
+              $role={message.role}
+              content={message.content}
+              timestamp={message.timestamp}
+            />
+          ))}
+          {isStreaming && (
+            <Message $role="assistant" content={streamingMessage} />
+          )}
+          {isLoading && (
+            <Message
+              $role="assistant"
+              isLoading={isLoading}
+              content={"로딩중"}
+            />
+          )}
+          {isInputting && (
+            <Message
+              $role="user"
+              isInputting={isInputting}
+              content={"입력중"}
+            />
+          )}
+
+          <div ref={messageEndRef} />
+        </ChatMessage>
+        <ChatInput>
+          <MessageInput>
+            <InputText
+              placeholder={"메세지를 입력하세요"}
+              value={input}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (
+                  e.key === "Enter" &&
+                  !e.ctrlKey &&
+                  !e.shiftKey &&
+                  !e.altKey
+                ) {
+                  if (e.keyCode === 229) return;
+                  e.preventDefault();
+                  handleSendMessage(input);
+                }
+              }}
+            />
+            <button
+              onClick={() => handleSendMessage(input)}
+              className="send"
+              disabled={isLoading}
+            >
+              보내기
+              {/*{isLoading ? "전송중..." : "보내기"}*/}
+            </button>
+          </MessageInput>
+        </ChatInput>
+      </section>
+    </ChatComponent>
   );
 };
 
-export default Homepage;
+export default Chat;
