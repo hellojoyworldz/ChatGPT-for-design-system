@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import Chat from "../Chat/Chat.tsx";
-
+import { LangType } from "../../types/type.ts";
 import {
   ChatPluginComponent,
   ChatPluginOpenButton,
@@ -9,7 +7,9 @@ import {
   ChatPluginBoxNav,
   ChatPluginCloseButton,
 } from "./ChatPlugin.style.ts";
-import { LangType } from "../../types/type.ts";
+import Chat from "../Chat/Chat.tsx";
+import Notice from "../Notice/Notice.tsx";
+import Settings from "../Settings/Settings.tsx";
 
 const navText = {
   en: {
@@ -26,6 +26,7 @@ const navText = {
 
 const ChatPlugin = ({ lang = "en" }: LangType) => {
   const [isOpen, setOpen] = useState(false);
+  const [content, setContent] = useState("notice");
 
   const toggleChatPlugin = () => setOpen(!isOpen);
 
@@ -34,20 +35,26 @@ const ChatPlugin = ({ lang = "en" }: LangType) => {
       {!isOpen && <ChatPluginOpenButton onClick={toggleChatPlugin} />}
       {isOpen && (
         <ChatPluginBox>
-          <Chat />
+          {content === "notice" ? (
+            <Notice />
+          ) : content === "chat" ? (
+            <Chat />
+          ) : content === "settings" ? (
+            <Settings />
+          ) : null}
           <ChatPluginBoxNav>
-            <Link className="item" to="/">
+            <button className="item" onClick={() => setContent("notice")}>
               <span className="icon">🐹</span>
               <span className="text">{navText[lang]?.notice}</span>
-            </Link>
-            <Link className="item" to="/caht">
+            </button>
+            <button className="item" onClick={() => setContent("chat")}>
               <span className="icon">💬</span>
               <span className="text">{navText[lang]?.chat}</span>
-            </Link>
-            <Link className="item" to="/settings">
+            </button>
+            <button className="item" onClick={() => setContent("settings")}>
               <span className="icon">⚙️</span>
               <span className="text">{navText[lang]?.settings}</span>
-            </Link>
+            </button>
           </ChatPluginBoxNav>
           <ChatPluginCloseButton onClick={() => setOpen(false)} />
         </ChatPluginBox>

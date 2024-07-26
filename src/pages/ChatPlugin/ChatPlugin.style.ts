@@ -41,7 +41,6 @@ export const ChatPluginBox = styled.article`
 
 export const ChatPluginBoxNav = styled.nav`
   display: flex;
-  height: 72px;
   background: linear-gradient(180deg, transparent, #fffda6);
 
   .item {
@@ -49,9 +48,14 @@ export const ChatPluginBoxNav = styled.nav`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0;
     width: 100%;
+    height: 72px;
     text-decoration: none;
     color: #333;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
   }
 
   .icon {
