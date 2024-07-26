@@ -8,8 +8,8 @@ import CryptoJS from "crypto-js";
 import Title from "../../components/Title.tsx";
 import InputText from "../../components/InputText.tsx";
 
-const STORAGE_KEY = "encryptedApiKey";
-const SECRET_KEY = "your-secret-key-here";
+const STORAGE_KEY = import.meta.env["VITE_OPEN_STORAGE_KEY"];
+const SECRET_KEY = import.meta.env["VITE_OPEN_SECRET_KEY"];
 const Settings = () => {
   const [apiKey, setApiKey] = useState<string>("");
   const [hasStoredKey, setHasStoredKey] = useState(false);
