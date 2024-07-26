@@ -1,5 +1,7 @@
-import Chat from "../Chat/Chat.tsx";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Chat from "../Chat/Chat.tsx";
+
 import {
   ChatPluginComponent,
   ChatPluginOpenButton,
@@ -23,27 +25,33 @@ const navText = {
 };
 
 const ChatPlugin = ({ lang = "en" }: LangType) => {
+  const [isOpen, setOpen] = useState(false);
+
+  const toggleChatPlugin = () => setOpen(!isOpen);
+
   return (
     <ChatPluginComponent>
-      <ChatPluginOpenButton />
-      <ChatPluginBox>
-        <Chat />
-        <ChatPluginBoxNav>
-          <Link className="item" to="/">
-            <span className="icon">🐹</span>
-            <span className="text">{navText[lang]?.notice}</span>
-          </Link>
-          <Link className="item" to="/caht">
-            <span className="icon">💬</span>
-            <span className="text">{navText[lang]?.chat}</span>
-          </Link>
-          <Link className="item" to="/settings">
-            <span className="icon">⚙️</span>
-            <span className="text">{navText[lang]?.settings}</span>
-          </Link>
-        </ChatPluginBoxNav>
-        <ChatPluginCloseButton />
-      </ChatPluginBox>
+      {!isOpen && <ChatPluginOpenButton onClick={toggleChatPlugin} />}
+      {isOpen && (
+        <ChatPluginBox>
+          <Chat />
+          <ChatPluginBoxNav>
+            <Link className="item" to="/">
+              <span className="icon">🐹</span>
+              <span className="text">{navText[lang]?.notice}</span>
+            </Link>
+            <Link className="item" to="/caht">
+              <span className="icon">💬</span>
+              <span className="text">{navText[lang]?.chat}</span>
+            </Link>
+            <Link className="item" to="/settings">
+              <span className="icon">⚙️</span>
+              <span className="text">{navText[lang]?.settings}</span>
+            </Link>
+          </ChatPluginBoxNav>
+          <ChatPluginCloseButton onClick={() => setOpen(false)} />
+        </ChatPluginBox>
+      )}
     </ChatPluginComponent>
   );
 };
