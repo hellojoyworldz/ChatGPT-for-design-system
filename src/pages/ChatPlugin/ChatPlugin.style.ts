@@ -39,6 +39,15 @@ export const ChatPluginBox = styled.article`
   overflow: hidden;
 `;
 
+export const ChatPluginBoxContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+`;
+
 export const ChatPluginBoxNav = styled.nav`
   display: flex;
   background: linear-gradient(180deg, transparent, #fffda6);

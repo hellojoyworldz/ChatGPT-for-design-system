@@ -4,6 +4,7 @@ import {
   ChatPluginComponent,
   ChatPluginOpenButton,
   ChatPluginBox,
+  ChatPluginBoxContent,
   ChatPluginBoxNav,
   ChatPluginCloseButton,
 } from "./ChatPlugin.style.ts";
@@ -13,7 +14,7 @@ import Settings from "../Settings/Settings.tsx";
 
 const navText = {
   en: {
-    notice: "notice",
+    notice: "Notice",
     chat: "Chat",
     settings: "Settings",
   },
@@ -24,7 +25,7 @@ const navText = {
   },
 };
 
-const ChatPlugin = ({ lang = "en" }: LangType) => {
+const ChatPlugin = ({ lang = "ko" }: LangType) => {
   const [isOpen, setOpen] = useState(false);
   const [content, setContent] = useState("notice");
 
@@ -35,13 +36,15 @@ const ChatPlugin = ({ lang = "en" }: LangType) => {
       {!isOpen && <ChatPluginOpenButton onClick={toggleChatPlugin} />}
       {isOpen && (
         <ChatPluginBox>
-          {content === "notice" ? (
-            <Notice />
-          ) : content === "chat" ? (
-            <Chat />
-          ) : content === "settings" ? (
-            <Settings />
-          ) : null}
+          <ChatPluginBoxContent>
+            {content === "notice" ? (
+              <Notice />
+            ) : content === "chat" ? (
+              <Chat />
+            ) : content === "settings" ? (
+              <Settings />
+            ) : null}
+          </ChatPluginBoxContent>
           <ChatPluginBoxNav>
             <button className="item" onClick={() => setContent("notice")}>
               <span className="icon">🐹</span>
