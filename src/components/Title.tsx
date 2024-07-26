@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ElementType, HTMLAttributes } from "react";
 
 const TitleComponent = styled.header`
   position: sticky;
@@ -20,7 +21,11 @@ const TitleComponent = styled.header`
   }
 `;
 
-const Title = ({ as, children, title }) => {
+interface TitleProps extends HTMLAttributes<HTMLElement> {
+  as?: ElementType;
+  title?: string;
+}
+const Title = ({ as, children, title }: TitleProps) => {
   return (
     <TitleComponent as={as}>
       <div className="in">
