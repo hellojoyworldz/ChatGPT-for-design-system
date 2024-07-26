@@ -7,6 +7,7 @@ import {
 import CryptoJS from "crypto-js";
 import Title from "../../components/Title.tsx";
 import InputText from "../../components/InputText.tsx";
+import { refreshOpenAI } from "../../utils/api.ts";
 
 const STORAGE_KEY = import.meta.env["VITE_OPEN_STORAGE_KEY"];
 const SECRET_KEY = import.meta.env["VITE_OPEN_SECRET_KEY"];
@@ -34,6 +35,7 @@ const Settings = () => {
     encrypteKey();
     setInputType("password");
     alert("key 값이 저장되었습니다");
+    refreshOpenAI();
   };
 
   // api key 초기화
@@ -41,6 +43,7 @@ const Settings = () => {
     localStorage.removeItem(STORAGE_KEY);
     setApiKey("");
     setHasStoredKey(false);
+    refreshOpenAI();
   };
 
   // input type 변경

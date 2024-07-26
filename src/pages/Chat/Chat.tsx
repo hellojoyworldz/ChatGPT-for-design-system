@@ -109,7 +109,6 @@ const Chat = ({ as }: { as?: ElementType }) => {
             setStreamingMessage,
             setStreaming,
             setLoading,
-            isLoading,
           );
 
           makeSetMessage("assistant", response);
