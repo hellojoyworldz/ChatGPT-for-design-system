@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ElementType, useCallback, useEffect, useRef, useState } from "react";
 import { chatResponse } from "../../utils/api.ts";
 import { MessageProps } from "../../types/type.ts";
 import {
@@ -11,7 +11,7 @@ import {
 import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 
-const Chat = ({ as }: { as?: React.ElementType }) => {
+const Chat = ({ as }: { as?: ElementType }) => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [input, setInput] = useState<string>("");
@@ -109,7 +109,6 @@ const Chat = ({ as }: { as?: React.ElementType }) => {
             setStreamingMessage,
             setStreaming,
             setLoading,
-            isLoading,
           );
 
           makeSetMessage("assistant", response);
