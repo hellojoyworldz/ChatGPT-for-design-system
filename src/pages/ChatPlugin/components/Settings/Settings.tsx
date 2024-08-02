@@ -5,9 +5,10 @@ import {
   SettingButtons,
   SettingsTitle,
 } from "./Settings.style.ts";
+import { settingApiKey } from "../../../../utils/api.ts";
+import { encryptKey } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
-import { refreshOpenAI } from "../../../../utils/api.ts";
 
 const Settings = ({
   inputKey,
@@ -33,14 +34,14 @@ const Settings = ({
     setInputKey("*".repeat(inputKey.length));
     setApiKey(true);
     setInputType("password");
-    refreshOpenAI(filterApiKey);
+    settingApiKey(encryptKey(filterApiKey));
   };
 
   // api key 초기화
   const handleResetApiKey = () => {
     setApiKey(false);
     setInputKey("");
-    refreshOpenAI("");
+    settingApiKey("");
   };
 
   // input type 변경
