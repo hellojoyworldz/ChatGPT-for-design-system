@@ -9,16 +9,16 @@ export const ChatPluginComponent = styled.aside`
 export const ChatPluginOpenButton = styled.button`
   position: fixed;
   bottom: 24px;
-  right: 0;
+  right: 24px;
   padding: 0;
-  width: 64px;
-  height: 48px;
+  width: 72px;
+  height: 72px;
   background-image: url(${chat});
   background-repeat: no-repeat;
   background-size: 120%;
   background-position: 20% 10%;
   border: 0;
-  border-radius: 28px 0 0 28px;
+  border-radius: 72px;
   box-shadow: -5px 5px 10px 0 #ddd;
   cursor: pointer;
 `;
