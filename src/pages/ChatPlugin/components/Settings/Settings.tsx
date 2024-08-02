@@ -57,7 +57,7 @@ const Settings = ({
     <section>
       <Title title="세팅" />
       <SettingsComponent>
-        <SettingsTitle>OpenAI Key</SettingsTitle>
+        <SettingsTitle>OpenAI API Key</SettingsTitle>
         <SettingsInput>
           <InputText
             type={inputType}
