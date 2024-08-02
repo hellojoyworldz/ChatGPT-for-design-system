@@ -28,6 +28,8 @@ const navText = {
 const ChatPlugin = ({ lang = "ko" }: LangType) => {
   const [isOpen, setOpen] = useState(false);
   const [content, setContent] = useState("notice");
+  const [isApiKey, setApiKey] = useState<boolean>(false);
+  const [inputKey, setInputKey] = useState<string>("");
 
   const toggleChatPlugin = () => setOpen(!isOpen);
 
@@ -42,7 +44,12 @@ const ChatPlugin = ({ lang = "ko" }: LangType) => {
             ) : content === "chat" ? (
               <Chat />
             ) : content === "settings" ? (
-              <Settings />
+              <Settings
+                inputKey={inputKey}
+                setInputKey={setInputKey}
+                isApiKey={isApiKey}
+                setApiKey={setApiKey}
+              />
             ) : null}
           </ChatPluginBoxContent>
           <ChatPluginBoxNav>
