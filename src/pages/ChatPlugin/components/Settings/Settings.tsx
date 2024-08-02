@@ -4,9 +4,9 @@ import {
   SettingsInput,
   SettingButtons,
 } from "./Settings.style.ts";
-import Title from "../../components/Title.tsx";
-import InputText from "../../components/InputText.tsx";
-import { refreshOpenAI } from "../../utils/api.ts";
+import Title from "../../../../components/Title.tsx";
+import InputText from "../../../../components/InputText.tsx";
+import { refreshOpenAI } from "../../../../utils/api.ts";
 
 const Settings = ({ inputKey, setInputKey, isApiKey, setApiKey }) => {
   const [inputType, setInputType] = useState<string>("password");

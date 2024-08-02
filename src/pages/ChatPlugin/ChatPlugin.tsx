@@ -9,8 +9,8 @@ import {
   ChatPluginCloseButton,
 } from "./ChatPlugin.style.ts";
 import Chat from "../Chat/Chat.tsx";
-import Notice from "../Notice/Notice.tsx";
-import Settings from "../Settings/Settings.tsx";
+import Notice from "./components/Notice/Notice.tsx";
+import Settings from "./components/Settings/Settings.tsx";
 
 const navText = {
   en: {

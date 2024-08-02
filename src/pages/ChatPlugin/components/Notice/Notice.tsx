@@ -1,4 +1,4 @@
-import Title from "../../components/Title.tsx";
+import Title from "../../../../components/Title.tsx";
 import styled from "styled-components";
 
 const NoticeComponent = styled.section`
