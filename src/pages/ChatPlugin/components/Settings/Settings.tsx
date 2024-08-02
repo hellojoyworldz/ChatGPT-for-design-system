@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   SettingsComponent,
   SettingsInput,
@@ -8,7 +8,17 @@ import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
 import { refreshOpenAI } from "../../../../utils/api.ts";
 
-const Settings = ({ inputKey, setInputKey, isApiKey, setApiKey }) => {
+const Settings = ({
+  inputKey,
+  setInputKey,
+  isApiKey,
+  setApiKey,
+}: {
+  inputKey: string;
+  setInputKey: Dispatch<SetStateAction<string>>;
+  isApiKey: boolean;
+  setApiKey: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [inputType, setInputType] = useState<string>("password");
 
   // 입력한 api key 저장
