@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const SettingsComponent = styled.div`
   position: relative;
   margin: 0 1em 2em 1em;
+`;
 
-  .tit {
-    display: block;
-    margin-bottom: 1em;
-  }
+export const SettingsTitle = styled.strong`
+  display: block;
+  margin-bottom: 1em;
 `;
 export const SettingsInput = styled.div`
   position: relative;

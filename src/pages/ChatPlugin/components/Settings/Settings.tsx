@@ -3,6 +3,7 @@ import {
   SettingsComponent,
   SettingsInput,
   SettingButtons,
+  SettingsTitle,
 } from "./Settings.style.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
@@ -55,7 +56,7 @@ const Settings = ({
     <section>
       <Title title="세팅" />
       <SettingsComponent>
-        <strong className="tit">OpenAI Key</strong>
+        <SettingsTitle>OpenAI Key</SettingsTitle>
         <SettingsInput>
           <InputText
             type={inputType}
