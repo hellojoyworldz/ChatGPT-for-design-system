@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { promptDesignSystem } from "./prompt";
 import { MessageProps } from "../types/type.ts";
-import { decryptKey } from "./keyManage.ts";
 
 const API_URL = import.meta.env.VITE_OPEN_AI_URL;
+const PORT = import.meta.env.VITE_OPEN_AI_PORT;
 let apiKey: string = "";
 
 // 세팅에서 저장한 api key
@@ -25,15 +25,15 @@ export const chatResponse = async (
     messages[0].role === "system" ? messages : [promptMessage, ...messages];
 
   try {
-    const response = await fetch(`${API_URL}/api/openai`, {
+    const response = await fetch(`${API_URL}:${PORT}/api/openai`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-model": "gpt-4o-mini",
+        "X-API-key": apiKey,
       },
       body: JSON.stringify({
         messages: chattingMessages,
-        model: "gpt-4o-mini",
-        apiKey: decryptKey(apiKey),
       }),
     });
 
