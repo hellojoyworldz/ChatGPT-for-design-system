@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
-import OpenAI from "openai";
-import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import OpenAI from "openai";
+import dotenv from "dotenv";
 import CryptoJS from "crypto-js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: `${__dirname}/../.env` });
 
 const app = express();
-const port = process.env.VITE_CHAT_URL_PORT || 3002;
+const port = process.env.VITE_CHAT_URL_PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -22,27 +22,26 @@ const decryptKey = (key) => {
   return CryptoJS.AES.decrypt(key, SECRET_KEY).toString(CryptoJS.enc.Utf8);
 };
 
-let apiKey = "";
-let chat = new OpenAI({
-  apiKey,
-});
 app.post("/api/chat", async (req, res) => {
   try {
-    const key = req.header("X-API-key");
-    const model = req.header("X-Model");
-    const { messages } = req.body;
+    const { apiKey: key, model, messages } = req.body;
 
     if (!key) {
       return res.status(401).json({ error: "API 키가 없습니다." });
     }
 
+    if (!model) {
+      return res.status(400).json({ error: "모델이 지정되지 않았습니다." });
+    }
+
+    let apiKey = "";
     try {
       apiKey = decryptKey(key);
     } catch (decryptError) {
       return res.status(400).json({ error: "잘못된 API 키 형식입니다." });
     }
 
-    chat = new OpenAI({
+    const chat = new OpenAI({
       apiKey: apiKey,
     });
 

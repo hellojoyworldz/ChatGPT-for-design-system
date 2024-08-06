@@ -36,10 +36,10 @@ export const chatResponse = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-model": model,
-        "X-API-key": apiKey,
       },
       body: JSON.stringify({
+        apiKey,
+        model,
         messages: chattingMessages,
       }),
     });
