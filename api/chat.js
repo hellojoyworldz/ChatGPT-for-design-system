@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: `${__dirname}/../.env` });
 
 const app = express();
-const port = process.env.PORT || 3002;
+const port = process.env.VITE_CHAT_URL_PORT || 3002;
 
 app.use(cors());
 app.use(express.json());
