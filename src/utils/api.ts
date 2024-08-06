@@ -1,15 +1,23 @@
 import { Dispatch, SetStateAction } from "react";
 import { promptDesignSystem } from "./prompt";
 import { MessageProps } from "../types/type.ts";
+import { modelOptions } from "./data.ts";
 
 const API_URL = import.meta.env.VITE_OPEN_AI_URL;
 const PORT = import.meta.env.VITE_OPEN_AI_PORT;
 let apiKey: string = "";
+let model: string = "" || modelOptions[0].value;
 
 // 세팅에서 저장한 api key
 export const settingApiKey = (key: string) => {
   apiKey = key;
 };
+
+// 세팅에서 선택한 model
+export const settingModel = (value: string) => {
+  model = value;
+};
+
 export const chatResponse = async (
   messages: MessageProps[],
   setStreamingMessage: Dispatch<SetStateAction<string>>,
@@ -29,7 +37,7 @@ export const chatResponse = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-model": "gpt-4o-mini",
+        "X-model": model,
         "X-API-key": apiKey,
       },
       body: JSON.stringify({
@@ -49,6 +57,7 @@ export const chatResponse = async (
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
+      setLoading(false);
 
       const chunk = decoder.decode(value);
       const lines = chunk.split("\n");
@@ -72,7 +81,6 @@ export const chatResponse = async (
       }
     }
     setStreaming(false);
-    setLoading(false);
 
     return (
       chunkContent || "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다."

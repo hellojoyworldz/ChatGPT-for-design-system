@@ -29,14 +29,19 @@ let openai = new OpenAI({
 app.post("/api/openai", async (req, res) => {
   try {
     const key = req.header("X-API-key");
-    const model = req.header("X-Model") || "gpt-4o-mini";
+    const model = req.header("X-Model");
     const { messages } = req.body;
 
     if (!key) {
       return res.status(401).json({ error: "API 키가 없습니다." });
     }
 
-    apiKey = decryptKey(key);
+    try {
+      apiKey = decryptKey(key);
+    } catch (decryptError) {
+      return res.status(400).json({ error: "잘못된 API 키 형식입니다." });
+    }
+
     openai = new OpenAI({
       apiKey: apiKey,
     });
@@ -65,14 +70,13 @@ app.post("/api/openai", async (req, res) => {
 
     res.end("data: [DONE]\n\n");
   } catch (error) {
-    console.error("OpenAI API error:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while processing your request." });
-    throw error;
+    if (!res.headersSent) {
+      res.status(500).json({ error: "요청 처리 중 오류가 발생했습니다." });
+    }
   }
 });
 
+// 서버 시작
 app.listen(port, () => {
   console.log(`server port: ${port}`);
 });
