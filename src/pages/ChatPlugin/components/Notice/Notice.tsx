@@ -47,6 +47,12 @@ const Notice = () => {
             </ul>
           </li>
           <li>
+            Model 선택:
+            <ul>
+              <li>원하는 챗봇의 모델을 선택할 수 있습니다.</li>
+            </ul>
+          </li>
+          <li>
             대화 시작:
             <ul>
               <li>

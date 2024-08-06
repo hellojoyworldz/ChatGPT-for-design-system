@@ -54,10 +54,10 @@ const ChatPlugin = ({ lang = "ko" }: LangType) => {
               <span className="icon">🐹</span>
               <span className="text">{navText[lang]?.notice}</span>
             </button>
-            <button className="item" onClick={() => setContent("chat")}>
-              <span className="icon">💬</span>
-              <span className="text">{navText[lang]?.chat}</span>
-            </button>
+            {/*<button className="item" onClick={() => setContent("chat")}>*/}
+            {/*  <span className="icon">💬</span>*/}
+            {/*  <span className="text">{navText[lang]?.chat}</span>*/}
+            {/*</button>*/}
             <button className="item" onClick={() => setContent("settings")}>
               <span className="icon">⚙️</span>
               <span className="text">{navText[lang]?.settings}</span>
