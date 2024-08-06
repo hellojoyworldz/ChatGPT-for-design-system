@@ -3,7 +3,7 @@ import { promptDesignSystem } from "./prompt";
 import { MessageProps } from "../types/type.ts";
 import { modelOptions } from "./data.ts";
 
-const API_URL = import.meta.env.VITE_CHAT_URL;
+const API_URL = import.meta.env.VITE_CHAT_URL || "";
 let apiKey: string = "";
 let model: string = "" || modelOptions[0].value;
 
