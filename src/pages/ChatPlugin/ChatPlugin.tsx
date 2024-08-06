@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LangType } from "../../types/type.ts";
 import {
   ChatPluginComponent,
@@ -11,27 +11,21 @@ import {
 import Chat from "../Chat/Chat.tsx";
 import Notice from "./components/Notice/Notice.tsx";
 import Settings from "./components/Settings/Settings.tsx";
-
-const navText = {
-  en: {
-    notice: "Notice",
-    chat: "Chat",
-    settings: "Settings",
-  },
-  ko: {
-    notice: "공지",
-    chat: "채팅",
-    settings: "세팅",
-  },
-};
+import { settingModel } from "../../utils/api.ts";
+import { modelOptions, navText } from "../../utils/data.ts";
 
 const ChatPlugin = ({ lang = "ko" }: LangType) => {
   const [isOpen, setOpen] = useState(false);
   const [content, setContent] = useState("notice");
   const [isApiKey, setApiKey] = useState<boolean>(false);
   const [inputKey, setInputKey] = useState<string>("");
+  const [model, setModel] = useState<string>(modelOptions[0].value);
 
   const toggleChatPlugin = () => setOpen(!isOpen);
+
+  useEffect(() => {
+    settingModel(model);
+  }, [model]);
 
   return (
     <ChatPluginComponent>
@@ -45,10 +39,13 @@ const ChatPlugin = ({ lang = "ko" }: LangType) => {
               <Chat />
             ) : content === "settings" ? (
               <Settings
+                modelOptions={modelOptions}
                 inputKey={inputKey}
                 setInputKey={setInputKey}
                 isApiKey={isApiKey}
                 setApiKey={setApiKey}
+                model={model}
+                setModel={setModel}
               />
             ) : null}
           </ChatPluginBoxContent>

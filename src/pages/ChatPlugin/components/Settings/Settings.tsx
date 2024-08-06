@@ -1,25 +1,33 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   SettingsComponent,
   SettingsInput,
   SettingButtons,
   SettingsTitle,
 } from "./Settings.style.ts";
-import { settingApiKey } from "../../../../utils/api.ts";
+import { settingApiKey, settingModel } from "../../../../utils/api.ts";
 import { encryptKey } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
+import SelectBox from "../../../../components/SelectBox.tsx";
+import { ModelOptionProps } from "../../../../types/type.ts";
 
 const Settings = ({
+  modelOptions,
   inputKey,
   setInputKey,
   isApiKey,
   setApiKey,
+  model,
+  setModel,
 }: {
+  modelOptions: ModelOptionProps[];
   inputKey: string;
   setInputKey: Dispatch<SetStateAction<string>>;
   isApiKey: boolean;
   setApiKey: Dispatch<SetStateAction<boolean>>;
+  model: string;
+  setModel: Dispatch<SetStateAction<string>>;
 }) => {
   const [inputType, setInputType] = useState<string>("password");
 
@@ -52,6 +60,11 @@ const Settings = ({
       setInputType("password");
     }
   };
+
+  // model 변경
+  useEffect(() => {
+    settingModel(model);
+  }, [model]);
 
   return (
     <section>
@@ -90,6 +103,8 @@ const Settings = ({
             </button>
           )}
         </SettingButtons>
+        <SettingsTitle>Model</SettingsTitle>
+        <SelectBox options={modelOptions} model={model} setModel={setModel} />
       </SettingsComponent>
     </section>
   );

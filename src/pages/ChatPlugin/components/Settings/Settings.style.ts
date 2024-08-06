@@ -7,7 +7,7 @@ export const SettingsComponent = styled.div`
 
 export const SettingsTitle = styled.strong`
   display: block;
-  margin-bottom: 1em;
+  margin: 1em 0;
 `;
 export const SettingsInput = styled.div`
   position: relative;
