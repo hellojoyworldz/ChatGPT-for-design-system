@@ -33,7 +33,7 @@ export const chatResponse = async (
     messages[0].role === "system" ? messages : [promptMessage, ...messages];
 
   try {
-    const response = await fetch(`${API_URL}:${PORT}/api/openai`, {
+    const response = await fetch(`${API_URL}:${PORT}/api/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
