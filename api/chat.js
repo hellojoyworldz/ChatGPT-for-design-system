@@ -23,10 +23,10 @@ const decryptKey = (key) => {
 };
 
 let apiKey = "";
-let openai = new OpenAI({
+let chat = new OpenAI({
   apiKey,
 });
-app.post("/api/openai", async (req, res) => {
+app.post("/api/chat", async (req, res) => {
   try {
     const key = req.header("X-API-key");
     const model = req.header("X-Model");
@@ -42,11 +42,11 @@ app.post("/api/openai", async (req, res) => {
       return res.status(400).json({ error: "잘못된 API 키 형식입니다." });
     }
 
-    openai = new OpenAI({
+    chat = new OpenAI({
       apiKey: apiKey,
     });
 
-    const chatCompletion = await openai.chat.completions.create({
+    const chatCompletion = await chat.chat.completions.create({
       model,
       messages,
       top_p: 1,
