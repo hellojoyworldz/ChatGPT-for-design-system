@@ -1,19 +1,27 @@
-import OpenAI from "openai";
+import { Dispatch, SetStateAction } from "react";
 import { promptDesignSystem } from "./prompt";
 import { MessageProps } from "../types/type.ts";
-import { Dispatch, SetStateAction } from "react";
+import { modelOptions } from "./data.ts";
 
-const openai = new OpenAI({
-  apiKey: import.meta.env["VITE_OPEN_AI_KEY"],
-  dangerouslyAllowBrowser: true,
-});
+const API_URL = import.meta.env.VITE_CHAT_URL || "";
+let apiKey: string = "";
+let model: string = "" || modelOptions[0].value;
+
+// 세팅에서 저장한 api key
+export const settingApiKey = (key: string) => {
+  apiKey = key;
+};
+
+// 세팅에서 선택한 model
+export const settingModel = (value: string) => {
+  model = value;
+};
 
 export const chatResponse = async (
   messages: MessageProps[],
   setStreamingMessage: Dispatch<SetStateAction<string>>,
   setStreaming: Dispatch<SetStateAction<boolean>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  isLoading: boolean,
 ): Promise<string> => {
   const promptMessage: MessageProps = {
     role: "system",
@@ -24,28 +32,55 @@ export const chatResponse = async (
     messages[0].role === "system" ? messages : [promptMessage, ...messages];
 
   try {
-    const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: chattingMessages,
-      top_p: 1,
-      temperature: 1,
-      presence_penalty: 0,
-      frequency_penalty: 0,
-      n: 1,
-      stream: true,
+    const response = await fetch(`${API_URL}/api/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        apiKey,
+        model,
+        messages: chattingMessages,
+      }),
     });
 
-    let chunkContent = "";
-    setStreaming(true);
-
-    for await (const chunk of chatCompletion) {
-      const content = chunk.choices[0]?.delta?.content || "";
-      chunkContent += content;
-      setStreamingMessage(chunkContent);
-      if (isLoading) setLoading(false);
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder("utf-8");
+    if (!reader) {
+      throw new Error("Failed to get response reader");
     }
 
+    setStreaming(true);
+    let chunkContent = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      setLoading(false);
+
+      const chunk = decoder.decode(value);
+      const lines = chunk.split("\n");
+
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          const data = line.slice(6);
+
+          if (data === "[DONE]") break;
+
+          try {
+            const parsedData = JSON.parse(data);
+            if (parsedData.content) {
+              chunkContent += parsedData.content;
+              setStreamingMessage(chunkContent);
+            }
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        }
+      }
+    }
     setStreaming(false);
+
     return (
       chunkContent || "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다."
     );
