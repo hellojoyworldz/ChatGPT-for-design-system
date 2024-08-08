@@ -1,4 +1,4 @@
-import Title from "../../components/Title.tsx";
+import Title from "../../../../components/Title.tsx";
 import styled from "styled-components";
 
 const NoticeComponent = styled.section`
@@ -44,6 +44,12 @@ const Notice = () => {
             <ul>
               <li>OpenAI 웹사이트에서 발급받을 수 있습니다. </li>
               <li>발급받은 API 키는 세팅에서 입력해 주세요.</li>
+            </ul>
+          </li>
+          <li>
+            Model 선택:
+            <ul>
+              <li>원하는 챗봇의 모델을 선택할 수 있습니다.</li>
             </ul>
           </li>
           <li>

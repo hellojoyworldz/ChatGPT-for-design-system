@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LangType } from "../../types/type.ts";
 import {
   ChatPluginComponent,
@@ -9,27 +9,23 @@ import {
   ChatPluginCloseButton,
 } from "./ChatPlugin.style.ts";
 import Chat from "../Chat/Chat.tsx";
-import Notice from "../Notice/Notice.tsx";
-import Settings from "../Settings/Settings.tsx";
-
-const navText = {
-  en: {
-    notice: "Notice",
-    chat: "Chat",
-    settings: "Settings",
-  },
-  ko: {
-    notice: "공지",
-    chat: "채팅",
-    settings: "세팅",
-  },
-};
+import Notice from "./components/Notice/Notice.tsx";
+import Settings from "./components/Settings/Settings.tsx";
+import { settingModel } from "../../utils/api.ts";
+import { modelOptions, navText } from "../../utils/data.ts";
 
 const ChatPlugin = ({ lang = "ko" }: LangType) => {
   const [isOpen, setOpen] = useState(false);
   const [content, setContent] = useState("notice");
+  const [isApiKey, setApiKey] = useState<boolean>(false);
+  const [inputKey, setInputKey] = useState<string>("");
+  const [model, setModel] = useState<string>(modelOptions[0].value);
 
   const toggleChatPlugin = () => setOpen(!isOpen);
+
+  useEffect(() => {
+    settingModel(model);
+  }, [model]);
 
   return (
     <ChatPluginComponent>
@@ -42,7 +38,15 @@ const ChatPlugin = ({ lang = "ko" }: LangType) => {
             ) : content === "chat" ? (
               <Chat />
             ) : content === "settings" ? (
-              <Settings />
+              <Settings
+                modelOptions={modelOptions}
+                inputKey={inputKey}
+                setInputKey={setInputKey}
+                isApiKey={isApiKey}
+                setApiKey={setApiKey}
+                model={model}
+                setModel={setModel}
+              />
             ) : null}
           </ChatPluginBoxContent>
           <ChatPluginBoxNav>
@@ -50,10 +54,10 @@ const ChatPlugin = ({ lang = "ko" }: LangType) => {
               <span className="icon">🐹</span>
               <span className="text">{navText[lang]?.notice}</span>
             </button>
-            <button className="item" onClick={() => setContent("chat")}>
-              <span className="icon">💬</span>
-              <span className="text">{navText[lang]?.chat}</span>
-            </button>
+            {/*<button className="item" onClick={() => setContent("chat")}>*/}
+            {/*  <span className="icon">💬</span>*/}
+            {/*  <span className="text">{navText[lang]?.chat}</span>*/}
+            {/*</button>*/}
             <button className="item" onClick={() => setContent("settings")}>
               <span className="icon">⚙️</span>
               <span className="text">{navText[lang]?.settings}</span>
