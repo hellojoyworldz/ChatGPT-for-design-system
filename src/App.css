@@ -11,3 +11,12 @@ body {
 #root {
   height: 100%;
 }
+
+.readonly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  font-size: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
