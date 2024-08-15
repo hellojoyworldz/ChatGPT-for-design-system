@@ -4,6 +4,8 @@ export const ChatComponent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 0 auto;
+  max-width: 800px;
   height: 100%;
   overflow-y: auto;
   box-sizing: border-box;
@@ -14,7 +16,6 @@ export const ChatHeader = styled.header`
   top: 0;
   padding: 3em 1em 2em 1em;
   width: 100%;
-  background: linear-gradient(0deg, transparent, #fffda6);
   box-sizing: border-box;
 
   .in {
@@ -38,13 +39,18 @@ export const ChatHeader = styled.header`
   }
 `;
 
+export const ChatBody = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`;
+
 export const ChatMessage = styled.div`
-  max-width: 800px;
-  margin: auto;
   padding: 0 1em;
 `;
 
-export const ChatInput = styled.div`
+export const ChatInputField = styled.div`
   position: sticky;
   left: 0;
   bottom: 0;
@@ -56,30 +62,69 @@ export const ChatInput = styled.div`
 
 export const MessageInput = styled.div`
   position: relative;
-  margin: auto;
-  max-width: 800px;
+`;
 
-  input {
-    display: block;
-    max-width: 800px;
-    margin: auto;
+export const MessageInputButton = styled.div`
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+`;
+
+export const ImageBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  padding: 24px;
+  height: 122px;
+  background: rgb(255 253 172 / 50%);
+  border: 1px solid #333;
+  border-radius: 24px;
+  box-sizing: border-box;
+  overflow-x: auto;
+`;
+
+export const ImageDragZone = styled.div`
+  width: 100%;
+  text-align: center;
+
+  .title {
+    font-size: 24px;
   }
 
-  && .send {
-    position: absolute;
-    right: 6px;
-    bottom: 6px;
-    padding: 0 12px;
-    height: 40px;
-    background: #fffda6;
-    border: 1px solid #333;
-    border-radius: 52px;
-    cursor: pointer;
+  .text {
+    margin: 1em 0 0 0;
+    font-size: 12px;
+  }
+`;
 
-    &:disabled {
-      background: #ddd;
-      border: 0;
-      cursor: auto;
-    }
+export const ImageList = styled.div`
+  display: flex;
+  gap: 16px;
+`;
+
+export const ImageListItem = styled.span`
+  position: relative;
+  display: block;
+  width: 100px;
+  height: 72px;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    object-fit: cover;
+    box-sizing: border-box;
+  }
+
+  .close {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
   }
 `;
