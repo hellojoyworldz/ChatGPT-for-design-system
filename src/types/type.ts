@@ -1,14 +1,18 @@
 export interface MessageProps {
   role: "user" | "system" | "assistant";
-  content: ContentProps;
+  content: ContentProps[];
   timestamp?: string;
   isStreaming?: boolean;
 }
 
 export interface ContentProps {
   type: "text" | "image_url";
-  image_url?: string;
   text?: string;
+  image_url?: ImageUrlProps;
+}
+
+export interface ImageUrlProps {
+  url?: string;
 }
 
 export interface ModelOptionProps {
