@@ -19,7 +19,7 @@ const ButtonComponent = styled.button`
 interface ButtonComponentProps extends HTMLAttributes<HTMLButtonElement> {
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   children?: ReactNode;
-  onClick?: () => Promise<void>;
+  onClick?: (() => void) | (() => Promise<void>);
   className?: string;
   disabled?: boolean;
 }
