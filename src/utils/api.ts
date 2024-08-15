@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { promptDesignSystem } from "./prompt";
-import { MessageProps } from "../types/type.ts";
+import { ContentProps, MessageProps } from "../types/type.ts";
 import { modelOptions } from "./data.ts";
 
 const API_URL = import.meta.env.VITE_CHAT_URL || "";
@@ -22,10 +22,15 @@ export const chatResponse = async (
   setStreamingMessage: Dispatch<SetStateAction<string>>,
   setStreaming: Dispatch<SetStateAction<boolean>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
-): Promise<string> => {
+): Promise<ContentProps[]> => {
   const promptMessage: MessageProps = {
     role: "system",
-    content: promptDesignSystem,
+    content: [
+      {
+        type: "text",
+        text: promptDesignSystem,
+      },
+    ],
   };
 
   const chattingMessages =
@@ -81,9 +86,14 @@ export const chatResponse = async (
     }
     setStreaming(false);
 
-    return (
-      chunkContent || "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다."
-    );
+    return chunkContent
+      ? [{ type: "text", text: chunkContent }]
+      : [
+          {
+            type: "text",
+            text: "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다.",
+          },
+        ];
   } catch (error) {
     console.log("response error", error);
     throw new Error("AI 응답을 생성하는 데 문제가 발생했습니다.");
