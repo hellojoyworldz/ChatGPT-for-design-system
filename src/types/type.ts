@@ -1,8 +1,18 @@
 export interface MessageProps {
   role: "user" | "system" | "assistant";
-  content: string;
+  content: ContentProps[];
   timestamp?: string;
   isStreaming?: boolean;
+}
+
+export interface ContentProps {
+  type: "text" | "image_url";
+  text?: string;
+  image_url?: ImageUrlProps;
+}
+
+export interface ImageUrlProps {
+  url?: string;
 }
 
 export interface ModelOptionProps {
@@ -12,4 +22,9 @@ export interface ModelOptionProps {
 
 export interface LangType {
   lang?: "en" | "ko";
+}
+
+export interface ImageProps {
+  file: File;
+  preview: string;
 }
