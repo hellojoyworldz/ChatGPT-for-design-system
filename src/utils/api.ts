@@ -2,15 +2,11 @@ import { Dispatch, SetStateAction } from "react";
 import { promptDesignSystem } from "./prompt";
 import { ContentProps, MessageProps } from "../types/type.ts";
 import { modelOptions } from "./data.ts";
+import { apiKeyStoreManager } from "./keyManage.ts";
 
 const API_URL = import.meta.env.VITE_CHAT_URL || "";
-let apiKey: string = "";
-let model: string = "" || modelOptions[0].value;
 
-// 세팅에서 저장한 api key
-export const settingApiKey = (key: string) => {
-  apiKey = key;
-};
+let model: string = "" || modelOptions[0].value;
 
 // 세팅에서 선택한 model
 export const settingModel = (value: string) => {
@@ -43,7 +39,7 @@ export const chatResponse = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        apiKey,
+        apiKey: apiKeyStoreManager.getKey(),
         model,
         messages: chattingMessages,
       }),

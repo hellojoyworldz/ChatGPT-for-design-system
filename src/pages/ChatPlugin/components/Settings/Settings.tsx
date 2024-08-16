@@ -5,8 +5,8 @@ import {
   SettingButtons,
   SettingsTitle,
 } from "./Settings.style.ts";
-import { settingApiKey, settingModel } from "../../../../utils/api.ts";
-import { encryptKey } from "../../../../utils/keyManage.ts";
+import { settingModel } from "../../../../utils/api.ts";
+import { apiKeyStoreManager, encryptKey } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
 import SelectBox from "../../../../components/SelectBox.tsx";
@@ -42,14 +42,14 @@ const Settings = ({
     setInputKey("*".repeat(inputKey.length));
     setApiKey(true);
     setInputType("password");
-    settingApiKey(encryptKey(filterApiKey));
+    apiKeyStoreManager.setKey(encryptKey(filterApiKey));
   };
 
   // api key 초기화
   const handleResetApiKey = () => {
     setApiKey(false);
     setInputKey("");
-    settingApiKey("");
+    apiKeyStoreManager.setKey("");
   };
 
   // input type 변경
