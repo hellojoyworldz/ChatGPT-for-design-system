@@ -1,35 +1,56 @@
 import { HTMLAttributes } from "react";
-import { MessageComponent, MessageProfileComponent } from "./Message.style.ts";
+import { MessageProps } from "../../../../types/type.ts";
+import {
+  MessageComponent,
+  MessageProfileComponent,
+  MessageImageList,
+  MessageImage,
+} from "./Message.style.ts";
 import Callout from "../../../../components/Callout.tsx";
 import EllipsisLoading from "../../../../components/EllipsisLoading.tsx";
 
-interface MessageProps extends HTMLAttributes<HTMLElement> {
-  content: string;
-  $role?: string;
-  isInputting?: boolean;
-  isLoading?: boolean;
-  timestamp?: string;
-}
+type ExtendedMessageProps = Omit<HTMLAttributes<HTMLDivElement>, "content"> &
+  MessageProps & {
+    isInputting?: boolean;
+    isLoading?: boolean;
+  };
 
 const Message = ({
   content,
   className,
-  $role,
+  role,
   isInputting,
   isLoading,
   timestamp,
-}: MessageProps) => {
+}: ExtendedMessageProps) => {
+  const contentText = content.filter((item) => item.type === "text");
+  const contentImages = content.filter((item) => item.type === "image_url");
+
   return (
-    <MessageComponent className={className} $role={$role}>
-      <MessageProfileComponent $role={$role}>
-        <span className="emoji">{$role === "user" ? "🐹" : "💬"}</span>
+    <MessageComponent className={className} role={role}>
+      <MessageProfileComponent role={role}>
+        <span className="emoji">{role === "user" ? "🐹" : "💬"}</span>
         <span className="timestamp">{timestamp}</span>
       </MessageProfileComponent>
 
       {isInputting || isLoading ? (
-        <EllipsisLoading $role={$role} />
+        <EllipsisLoading role={role} />
       ) : (
-        <Callout $role={$role}>{content}</Callout>
+        <>
+          {contentText.map((item, idx) => (
+            <Callout key={idx} role={role}>
+              {item.text}
+            </Callout>
+          ))}
+
+          {contentImages.length > 0 && (
+            <MessageImageList>
+              {contentImages.map((item, key) => (
+                <MessageImage key={key} src={item.image_url?.url} alt="image" />
+              ))}
+            </MessageImageList>
+          )}
+        </>
       )}
     </MessageComponent>
   );

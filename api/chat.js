@@ -15,7 +15,8 @@ const app = express();
 const port = process.env.VITE_CHAT_URL_PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 const SECRET_KEY = process.env.VITE_SECRET_KEY;
 const decryptKey = (key) => {
