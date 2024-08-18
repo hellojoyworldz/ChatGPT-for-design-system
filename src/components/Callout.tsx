@@ -2,8 +2,8 @@ import { HTMLAttributes, ElementType } from "react";
 import styled from "styled-components";
 import BoxComponent from "./BoxComponent.tsx";
 
-const CalloutComponent = styled(BoxComponent)<{ $role?: string }>`
-  margin: 0;
+const CalloutComponent = styled(BoxComponent)<{ role?: string }>`
+  margin-top: 5px;
   padding: 10px;
   max-width: 70%;
   color: #333;
@@ -12,7 +12,7 @@ const CalloutComponent = styled(BoxComponent)<{ $role?: string }>`
   border: 1px solid #333;
   border-radius: 18px;
   ${(props) => {
-    switch (props.$role) {
+    switch (props.role) {
       case "user":
         return `
           margin-left:auto;
@@ -33,7 +33,7 @@ const CalloutComponent = styled(BoxComponent)<{ $role?: string }>`
 
 interface CalloutProps extends HTMLAttributes<HTMLElement> {
   as?: ElementType;
-  $role?: string;
+  role?: string;
 }
 const Callout = ({ as = "div", children, ...props }: CalloutProps) => {
   return (
