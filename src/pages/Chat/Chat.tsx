@@ -303,7 +303,7 @@ const Chat = ({ as }: { as?: ElementType }) => {
                   🏞️ 이미지를 가져다 놓으세요 🏞️
                 </strong>
                 <p className="text">
-                  형식: 이미지 / 용량: {MAX_SIZE}mb 까지 / 갯수: {MAX_IMAGES}개
+                  형식: 이미지 / 용량: {MAX_SIZE}mb 까지 / 개수: {MAX_IMAGES}개
                 </p>
               </ImageDragZone>
             </ImageBox>

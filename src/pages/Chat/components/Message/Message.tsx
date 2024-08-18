@@ -1,4 +1,5 @@
 import { HTMLAttributes } from "react";
+import ReactMarkdown from "react-markdown";
 import { MessageProps } from "../../../../types/type.ts";
 import {
   MessageComponent,
@@ -39,7 +40,11 @@ const Message = ({
         <>
           {contentText.map((item, idx) => (
             <Callout key={idx} role={role}>
-              {item.text}
+              {role === "user" ? (
+                item.text
+              ) : (
+                <ReactMarkdown>{item.text}</ReactMarkdown>
+              )}
             </Callout>
           ))}
 
