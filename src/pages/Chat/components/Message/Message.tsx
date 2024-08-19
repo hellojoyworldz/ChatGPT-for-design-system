@@ -43,7 +43,7 @@ const Message = ({
               {role === "user" ? (
                 item.text
               ) : (
-                <ReactMarkdown>{item.text}</ReactMarkdown>
+                <ReactMarkdown>{item.text || ""}</ReactMarkdown>
               )}
             </Callout>
           ))}
