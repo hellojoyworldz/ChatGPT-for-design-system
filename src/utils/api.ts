@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { promptDesignSystem } from "./prompt";
 import { ContentProps, MessageProps } from "../types/type.ts";
-import { modelOptions } from "./data.ts";
+import { errorMesaage, modelOptions } from "./data.ts";
 import { apiKeyStoreManager } from "./keyManage.ts";
 
 const API_URL = import.meta.env.VITE_CHAT_URL || "";
@@ -44,6 +44,34 @@ export const chatResponse = async (
         messages: chattingMessages,
       }),
     });
+
+    if (!response.ok) {
+      let errorText: string = errorMesaage["default"];
+      switch (response.status) {
+        case 400:
+          errorText = errorMesaage[400];
+          break;
+        case 401:
+          errorText = errorMesaage[401];
+          break;
+        case 403:
+          errorText = errorMesaage[403];
+          break;
+        case 404:
+          errorText = errorMesaage[404];
+          break;
+        case 429:
+          errorText = errorMesaage[429];
+          break;
+        case 500:
+          errorText = errorMesaage[500];
+          break;
+        default:
+          break;
+      }
+
+      return [{ type: "text", text: errorText }];
+    }
 
     const reader = response.body?.getReader();
     const decoder = new TextDecoder("utf-8");
