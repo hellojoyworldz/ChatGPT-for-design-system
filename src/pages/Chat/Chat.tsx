@@ -26,8 +26,8 @@ import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 import Button from "../../components/Button.tsx";
 
-const MAX_IMAGES = 3;
-const MAX_SIZE = 5;
+const MAX_IMAGES = 2;
+const MAX_SIZE = 4;
 const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024;
 
 const Chat = ({ as }: { as?: ElementType }) => {
