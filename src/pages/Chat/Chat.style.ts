@@ -43,6 +43,7 @@ export const ChatBody = styled.section`
   flex-direction: column;
   justify-content: space-between;
   margin: 0 auto;
+  width: 100%;
   max-width: 800px;
   height: 100%;
 `;
