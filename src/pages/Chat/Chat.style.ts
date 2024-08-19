@@ -5,7 +5,6 @@ export const ChatComponent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 800px;
   height: 100%;
   overflow-y: auto;
   box-sizing: border-box;
@@ -16,6 +15,7 @@ export const ChatHeader = styled.header`
   top: 0;
   padding: 3em 1em 2em 1em;
   width: 100%;
+  text-align: center;
   box-sizing: border-box;
 
   .in {
@@ -26,7 +26,6 @@ export const ChatHeader = styled.header`
   && h1 {
     margin: 0;
     font-size: 1.8rem;
-    text-align: center;
   }
 
   && .reset {
@@ -43,6 +42,8 @@ export const ChatBody = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 0 auto;
+  max-width: 800px;
   height: 100%;
 `;
 
@@ -124,7 +125,9 @@ export const ImageListItem = styled.span`
     left: -10px;
     width: 24px;
     height: 24px;
+    font-size: 12px;
     border: 1px solid #ddd;
     border-radius: 50%;
+    cursor: pointer;
   }
 `;

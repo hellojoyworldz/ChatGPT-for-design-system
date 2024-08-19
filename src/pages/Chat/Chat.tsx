@@ -238,6 +238,8 @@ const Chat = ({ as }: { as?: ElementType }) => {
       <ChatHeader>
         <div className="in">
           <h1>🎨 ChatGPT for design system 🖌</h1>
+          <p>✨디자인 시스템에 대한 모든 것을 알려주는 AI 챗봇입니다. ✨</p>
+          <p>✨우측 하단 배너를 클릭하여 API 키를 입력해주세요! ✨</p>
           <button onClick={handleReset} className="reset">
             초기화
           </button>
