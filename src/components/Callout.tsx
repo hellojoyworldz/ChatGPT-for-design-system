@@ -8,7 +8,6 @@ const CalloutComponent = styled(BoxComponent)<{ role?: string }>`
   max-width: 70%;
   color: #333;
   line-height: 1.5;
-  white-space: pre-wrap;
   border: 1px solid #333;
   border-radius: 18px;
   ${(props) => {
@@ -29,6 +28,15 @@ const CalloutComponent = styled(BoxComponent)<{ role?: string }>`
         return "background:#f1f1f1";
     }
   }}
+
+  pre {
+    margin: 1em 0;
+    padding: 1em;
+    background: #fff;
+    border: 1px solid #333;
+    border-radius: 1em;
+    overflow-x: scroll;
+  }
 `;
 
 interface CalloutProps extends HTMLAttributes<HTMLElement> {

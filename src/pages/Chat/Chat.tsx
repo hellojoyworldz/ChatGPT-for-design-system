@@ -26,8 +26,8 @@ import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 import Button from "../../components/Button.tsx";
 
-const MAX_IMAGES = 3;
-const MAX_SIZE = 5;
+const MAX_IMAGES = 2;
+const MAX_SIZE = 4;
 const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024;
 
 const Chat = ({ as }: { as?: ElementType }) => {
@@ -238,6 +238,8 @@ const Chat = ({ as }: { as?: ElementType }) => {
       <ChatHeader>
         <div className="in">
           <h1>🎨 ChatGPT for design system 🖌</h1>
+          <p>✨디자인 시스템에 대한 모든 것을 알려주는 AI 챗봇입니다. ✨</p>
+          <p>✨우측 하단 배너를 클릭하여 API 키를 입력해주세요! ✨</p>
           <button onClick={handleReset} className="reset">
             초기화
           </button>
@@ -303,7 +305,7 @@ const Chat = ({ as }: { as?: ElementType }) => {
                   🏞️ 이미지를 가져다 놓으세요 🏞️
                 </strong>
                 <p className="text">
-                  형식: 이미지 / 용량: {MAX_SIZE}mb 까지 / 갯수: {MAX_IMAGES}개
+                  형식: 이미지 / 용량: {MAX_SIZE}mb 까지 / 개수: {MAX_IMAGES}개
                 </p>
               </ImageDragZone>
             </ImageBox>
