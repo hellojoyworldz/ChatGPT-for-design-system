@@ -39,7 +39,7 @@ app.post("/api/chat", async (req, res) => {
     try {
       apiKey = decryptKey(key);
     } catch (decryptError) {
-      return res.status(400).json({ error: "잘못된 API 키 형식입니다." });
+      return res.status(401).json({ error: "잘못된 API 키 형식입니다." });
     }
 
     const chat = new OpenAI({
@@ -70,8 +70,12 @@ app.post("/api/chat", async (req, res) => {
 
     res.end("data: [DONE]\n\n");
   } catch (error) {
-    if (!res.headersSent) {
-      res.status(500).json({ error: "요청 처리 중 오류가 발생했습니다." });
+    if (error instanceof OpenAI.APIError) {
+      const status = error.status || 500;
+      const message = error.message || "알 수 없는 오류가 발생했습니다.";
+      res.status(status).json({ error: message });
+    } else {
+      res.status(500).json({ error: "서버 내부 오류가 발생했습니다." });
     }
   }
 });
