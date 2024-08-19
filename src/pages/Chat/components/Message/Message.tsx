@@ -9,6 +9,7 @@ import {
 } from "./Message.style.ts";
 import Callout from "../../../../components/Callout.tsx";
 import EllipsisLoading from "../../../../components/EllipsisLoading.tsx";
+import defaultImageSrc from "../../../../assets/images/default-fallback-image.png";
 
 type ExtendedMessageProps = Omit<HTMLAttributes<HTMLDivElement>, "content"> &
   MessageProps & {
@@ -51,7 +52,14 @@ const Message = ({
           {contentImages.length > 0 && (
             <MessageImageList>
               {contentImages.map((item, key) => (
-                <MessageImage key={key} src={item.image_url?.url} alt="image" />
+                <MessageImage
+                  key={key}
+                  src={item.image_url?.url}
+                  alt="image"
+                  onError={(e) => {
+                    e.currentTarget.src = defaultImageSrc;
+                  }}
+                />
               ))}
             </MessageImageList>
           )}
