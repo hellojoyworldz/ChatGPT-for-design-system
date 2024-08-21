@@ -2,7 +2,7 @@ import { ElementType, HTMLAttributes } from "react";
 import styled from "styled-components";
 import BoxComponent from "./BoxComponent.tsx";
 
-const EllipsisLoadingComponent = styled(BoxComponent)<{ $role?: string }>`
+const EllipsisLoadingComponent = styled(BoxComponent)<{ role?: string }>`
   display: inline-block;
   margin: 0 10px;
   padding: 5px 10px;
@@ -18,7 +18,7 @@ const EllipsisLoadingComponent = styled(BoxComponent)<{ $role?: string }>`
     opacity: 0;
     animation: loadingDots 1.5s infinite;
     background: ${(props) => {
-      switch (props.$role) {
+      switch (props.role) {
         case "user":
           return "#007bff";
         case "assistant":
@@ -52,7 +52,7 @@ const EllipsisLoadingComponent = styled(BoxComponent)<{ $role?: string }>`
 
 interface EllipsisLoadingProps extends HTMLAttributes<HTMLElement> {
   as?: ElementType;
-  $role?: string;
+  role?: string;
 }
 
 const EllipsisLoading = ({ as = "div", ...props }: EllipsisLoadingProps) => {
