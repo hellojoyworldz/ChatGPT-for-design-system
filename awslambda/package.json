@@ -3,16 +3,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "zip": "rm -f awslambda.zip && zip -r awslambda.zip index.js package.json node_modules"
+    "zip": "rm -f awslambda.zip && zip -r awslambda.zip 222.js package.json node_modules"
   },
   "dependencies": {
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
-    "from": "^0.1.7",
-    "import": "^0.0.6",
     "openai": "^4.55.7"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "^8.10.143"
   }
 }

@@ -10,50 +10,51 @@ const decryptKey = (key) => {
   return CryptoJS.AES.decrypt(key, SECRET_KEY).toString(CryptoJS.enc.Utf8);
 };
 
+const errorResponseStream = (responseStream, statusCode, message) => {
+  responseStream = awslambda.HttpResponseStream.from(responseStream, {
+    statusCode: statusCode,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  responseStream.write(JSON.stringify({ error: message }));
+  return responseStream.end();
+};
+
 export const handler = awslambda.streamifyResponse(
   async (event, responseStream) => {
     try {
       const { apiKey: key, model, messages } = JSON.parse(event.body);
 
       if (!key) {
-        responseStream.write(JSON.stringify({ error: "API 키가 없습니다." }));
-        return responseStream.end();
+        return errorResponseStream(responseStream, 401, "API 키가 없습니다.");
       }
 
       if (!model) {
-        responseStream.write(
-          JSON.stringify({ error: "모델이 지정되지 않았습니다." }),
+        return errorResponseStream(
+          responseStream,
+          400,
+          "모델이 지정되지 않았습니다.",
         );
-        return responseStream.end();
       }
 
       let apiKey = "";
       try {
         apiKey = decryptKey(key);
       } catch (decryptError) {
-        responseStream.write(
-          JSON.stringify({ error: "잘못된 API 키 형식입니다." }),
+        return errorResponseStream(
+          responseStream,
+          401,
+          "잘못된 API 키 형식입니다.",
         );
-        return responseStream.end();
       }
 
-      // responseStream.setContentType("text/event-stream");
-      const httpResponseMetadata = {
+      responseStream = awslambda.HttpResponseStream.from(responseStream, {
         statusCode: 200,
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST,OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
           "Content-Type": "text/event-stream",
-          "Cache-Control": "no-cache",
-          Connection: "keep-alive",
         },
-      };
-
-      responseStream = awslambda.HttpResponseStream.from(
-        responseStream,
-        httpResponseMetadata,
-      );
+      });
 
       const chat = new OpenAI({
         apiKey: apiKey,
@@ -74,14 +75,12 @@ export const handler = awslambda.streamifyResponse(
         const content = chunk.choices[0]?.delta?.content || "";
         responseStream.write(`data: ${JSON.stringify({ content })}\n\n`);
       }
+
       responseStream.write("data: [DONE]\n\n");
+      console.log("DONE!!!");
     } catch (error) {
+      errorResponseStream(responseStream, error.status, error);
       console.log("error", error);
-      responseStream.write(
-        JSON.stringify({
-          error: "요청 처리 중 오류가 발생했습니다." + error,
-        }),
-      );
     } finally {
       responseStream.end();
     }
