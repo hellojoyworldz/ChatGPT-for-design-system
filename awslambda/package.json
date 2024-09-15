@@ -3,7 +3,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "zip": "rm -f awslambda.zip && zip -r awslambda.zip 222.js package.json node_modules"
+    "zip": "rm -f awslambda.zip && zip -r awslambda.zip index.js package.json node_modules"
   },
   "dependencies": {
     "crypto-js": "^4.2.0",
