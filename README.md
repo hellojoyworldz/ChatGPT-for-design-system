@@ -19,7 +19,9 @@
 ## 🌟 서비스 특징
 - **API 키 입력**  
   우측 하단의 배너를 클릭하여 OpenAI API 키를 입력해야 대화를 시작할 수 있습니다.    
-    ![chrome-capture-2024-8-12](https://github.com/user-attachments/assets/5a4302e2-bbfe-4260-943c-c65777cf83e2)
+    ![chrome-capture-2024-8-12](https://github.com/user-attachments/assets/5a4302e2-bbfe-4260-943c-c65777cf83e2)    
+  OpenAI API 키가 없으면 '임시키사용' 버튼을 클릭하여 사용해보세요  
+    <img width="400" alt="스크린샷 2024-09-28 02 06 10" src="https://github.com/user-attachments/assets/02574699-d014-426c-9e3d-5a336e185b84">
 - **AI 모델 선택**  
   다양한 AI 모델을 선택할 수 있습니다.    
     ![chrome-capture-2024-8-12 (3)](https://github.com/user-attachments/assets/2d5c81e6-ba0b-4471-a5df-3a2f029c406d)
