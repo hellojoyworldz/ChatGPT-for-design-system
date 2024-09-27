@@ -56,4 +56,5 @@
 ## ⚙️ .env 파일 설정
 - `VITE_SECRET_KEY`: OpenAI API 키의 암호화 및 복호화에 사용됩니다.
 - `VITE_CHAT_URL`: http://localhost:3001
-- `VITE_CHAT_URL_PORT`: API 서버의 포트 번호를 설정할 수 있습니다.(기본값은 3001)
+- `VITE_CHAT_URL_PORT`: API 서버의 포트 번호를 설정할 수 있습니다.
+- `VITE_OPEN_AI_KEY`: 임시키사용 버튼에 사용되는 OpenAI API 키
