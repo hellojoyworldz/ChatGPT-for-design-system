@@ -1,10 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import {
-  SettingsComponent,
-  SettingsInput,
-  SettingButtons,
-  SettingsTitle,
-} from "./Settings.style.ts";
+import { SettingsComponent, SettingsInput, SettingButtons, SettingsTitle } from "./Settings.style.ts";
 import { settingModel } from "../../../../utils/api.ts";
 import { apiKeyStoreManager, encryptKey } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
@@ -30,6 +25,13 @@ const Settings = ({
   setModel: Dispatch<SetStateAction<string>>;
 }) => {
   const [inputType, setInputType] = useState<string>("password");
+
+  // 임시키 사용
+  const handelTemporaryApiKey = () => {
+    setInputKey("*".repeat(apiKeyStoreManager.getTemporaryAPIKey().length));
+    setApiKey(true);
+    apiKeyStoreManager.setKey(encryptKey(apiKeyStoreManager.getTemporaryAPIKey()));
+  };
 
   // 입력한 api key 저장
   const handelApiKey = () => {
@@ -93,9 +95,14 @@ const Settings = ({
         </SettingsInput>
         <SettingButtons>
           {!isApiKey && (
-            <button className="item" onClick={handelApiKey}>
-              저장
-            </button>
+            <>
+              <button className="item" onClick={handelTemporaryApiKey}>
+                임시키사용
+              </button>
+              <button className="item" onClick={handelApiKey}>
+                저장
+              </button>
+            </>
           )}
           {isApiKey && (
             <button className="item" onClick={handleResetApiKey}>

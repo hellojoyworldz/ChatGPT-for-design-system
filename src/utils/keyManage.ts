@@ -1,5 +1,6 @@
 import CryptoJS from "crypto-js";
 
+const TEMPORARY_API_KEY = import.meta.env.VITE_OPEN_AI_KEY;
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
 
 // 암호화
@@ -23,9 +24,14 @@ class APIKeyStore {
   static setAPIKey(key: string) {
     this.apiKey = key;
   }
+
+  static getTemporaryAPIKey(): string {
+    return TEMPORARY_API_KEY;
+  }
 }
 
 export const apiKeyStoreManager = {
   getKey: () => APIKeyStore.getAPIKey(),
   setKey: (key: string) => APIKeyStore.setAPIKey(key),
+  getTemporaryAPIKey: () => APIKeyStore.getTemporaryAPIKey(),
 };
