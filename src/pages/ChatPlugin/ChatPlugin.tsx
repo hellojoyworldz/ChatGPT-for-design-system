@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LangType } from "../../types/type.ts";
 import {
   ChatPluginComponent,
@@ -11,21 +11,18 @@ import {
 import Chat from "../Chat/Chat.tsx";
 import Notice from "./components/Notice/Notice.tsx";
 import Settings from "./components/Settings/Settings.tsx";
-import { settingModel } from "../../utils/api.ts";
 import { modelOptions, navText } from "../../utils/data.ts";
+import { useModel } from "../../hook/useModel.tsx";
 
 const ChatPlugin = ({ lang = "ko" }: LangType) => {
+  const { model, setModel } = useModel();
+
   const [isOpen, setOpen] = useState(false);
   const [content, setContent] = useState("notice");
   const [isApiKey, setApiKey] = useState<boolean>(false);
   const [inputKey, setInputKey] = useState<string>("");
-  const [model, setModel] = useState<string>(modelOptions[0].value);
 
   const toggleChatPlugin = () => setOpen(!isOpen);
-
-  useEffect(() => {
-    settingModel(model);
-  }, [model]);
 
   return (
     <ChatPluginComponent>

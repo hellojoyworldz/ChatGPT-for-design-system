@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SettingsComponent, SettingsInput, SettingButtons, SettingsTitle } from "./Settings.style.ts";
-import { settingModel } from "../../../../utils/api.ts";
 import { apiKeyStoreManager, encryptKey } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
@@ -46,11 +45,6 @@ const Settings = ({ modelOptions, inputKey, setInputKey, isApiKey, setApiKey, mo
       setInputType("password");
     }
   };
-
-  // model 변경
-  useEffect(() => {
-    settingModel(model);
-  }, [model]);
 
   return (
     <section>
