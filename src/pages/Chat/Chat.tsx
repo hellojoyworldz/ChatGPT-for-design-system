@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState, ChangeEvent, DragEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { chatResponse } from "../../utils/api.ts";
-import { ChatProps, ContentProps, ImageProps, MessageProps } from "../../types/type.ts";
+import { ChatProps, ContentProps, MessageProps } from "../../types/type.ts";
 import {
   ChatComponent,
   ChatHeader,
@@ -17,21 +17,30 @@ import {
 import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 import Button from "../../components/Button.tsx";
-
-const MAX_IMAGES = 2;
-const MAX_SIZE = 4;
-const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024;
+import { useImageUpload } from "../../hook/useImageUpload.tsx";
+import { useLocalStorageMessage } from "../../hook/useLocalStorageMessage.tsx";
 
 const Chat = ({ as, className }: ChatProps) => {
-  const [messages, setMessages] = useState<MessageProps[]>([]);
+  const {
+    MAX_IMAGES,
+    MAX_SIZE,
+    images,
+    setImages,
+    isDragging,
+    handleDragOver,
+    handleDragEnd,
+    handleDrop,
+    handleFileChange,
+    removeImage,
+  } = useImageUpload();
+  const { messages, setMessages, handleReset } = useLocalStorageMessage();
+
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isInputting, setInputting] = useState<boolean>(false);
   const [isStreaming, setStreaming] = useState<boolean>(false);
   const [inputtingTimer, setInputtingTimer] = useState<NodeJS.Timeout | null>(null);
-  const [images, setImages] = useState<ImageProps[]>([]);
-  const [isDragging, setDragging] = useState<boolean>(false);
 
   const messageEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,23 +56,6 @@ const Chat = ({ as, className }: ChatProps) => {
     scrollBottom();
   }, [messages, streamingMessage, input]);
 
-  // localStorage에 저장된 messages 가져오기
-  useEffect(() => {
-    const savedMessages = localStorage.getItem("chatMessages");
-    if (savedMessages) {
-      setMessages(
-        JSON.parse(savedMessages).map((msg: MessageProps) => ({
-          ...msg,
-        }))
-      );
-    }
-  }, []);
-
-  // localStorage에 messages 저장
-  useEffect(() => {
-    localStorage.setItem("chatMessages", JSON.stringify(messages));
-  }, [messages]);
-
   // 이미지를 base64로 변환하는 함수
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -72,17 +64,6 @@ const Chat = ({ as, className }: ChatProps) => {
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (error) => reject(error);
     });
-  };
-
-  // setImages에 이미지 추가하는 함수
-  const addImages = (files: File[]) => {
-    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
-    const filterFiles = imageFiles.filter((file) => file.size <= MAX_FILE_SIZE);
-    const newImages: ImageProps[] = filterFiles.slice(0, MAX_IMAGES - images.length).map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setImages((prev) => [...prev, ...newImages].slice(0, MAX_IMAGES));
   };
 
   // 메세지를 입력할 때
@@ -96,26 +77,23 @@ const Chat = ({ as, className }: ChatProps) => {
     [inputtingTimer]
   );
 
-  // messages를 삭제하고 localStorage를 초기화
-  const handleReset = useCallback(() => {
-    setMessages([]);
-    localStorage.removeItem("chatMessages");
-  }, []);
-
   // setMessages에 message를 추가하는 함수
-  const makeSetMessage = useCallback((role: MessageProps["role"], content: ContentProps[]) => {
-    const newMessage: MessageProps = {
-      role,
-      content,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
+  const makeSetMessage = useCallback(
+    (role: MessageProps["role"], content: ContentProps[]) => {
+      const newMessage: MessageProps = {
+        role,
+        content,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
 
-    setMessages((prev) => [...prev, newMessage]);
-    return newMessage;
-  }, []);
+      setMessages((prev) => [...prev, newMessage]);
+      return newMessage;
+    },
+    [setMessages]
+  );
 
   // 입력한 메세지를 전송하고 응답을 받아 messages에 추가
   const handleSendMessage = useCallback(
@@ -174,43 +152,8 @@ const Chat = ({ as, className }: ChatProps) => {
         }
       }
     },
-    [isLoading, messages, makeSetMessage, images]
+    [isLoading, messages, makeSetMessage, images, setImages]
   );
-
-  // 드래그 할 때
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setDragging(true);
-  };
-
-  // 드래그 끝날 때
-  const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (!componentRef.current?.contains(e.relatedTarget as Node)) {
-      setDragging(false);
-    }
-  };
-
-  // 드래그 후 놓을 때
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    addImages(files);
-  };
-
-  // 이미지 선택
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      addImages([...files]);
-    }
-  };
-
-  // 이미지 삭제
-  const removeImage = (index: number) => {
-    setImages((prev: ImageProps[]) => prev.filter((_, idx) => idx !== index));
-  };
 
   return (
     <ChatComponent
