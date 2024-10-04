@@ -13,14 +13,13 @@ import Notice from "./components/Notice/Notice.tsx";
 import Settings from "./components/Settings/Settings.tsx";
 import { modelOptions, navText } from "../../utils/data.ts";
 import { useModel } from "../../hook/useModel.tsx";
+import { useApiKey } from "../../hook/useApiKey.tsx";
 
 const ChatPlugin = ({ lang = "ko" }: LangType) => {
+  const { inputKey, setInputKey, isApiKey, setApiKey } = useApiKey();
   const { model, setModel } = useModel();
-
   const [isOpen, setOpen] = useState(false);
   const [content, setContent] = useState("notice");
-  const [isApiKey, setApiKey] = useState<boolean>(false);
-  const [inputKey, setInputKey] = useState<string>("");
 
   const toggleChatPlugin = () => setOpen(!isOpen);
 
@@ -51,10 +50,6 @@ const ChatPlugin = ({ lang = "ko" }: LangType) => {
               <span className="icon">🐹</span>
               <span className="text">{navText[lang]?.notice}</span>
             </button>
-            {/*<button className="item" onClick={() => setContent("chat")}>*/}
-            {/*  <span className="icon">💬</span>*/}
-            {/*  <span className="text">{navText[lang]?.chat}</span>*/}
-            {/*</button>*/}
             <button className="item" onClick={() => setContent("settings")}>
               <span className="icon">⚙️</span>
               <span className="text">{navText[lang]?.settings}</span>

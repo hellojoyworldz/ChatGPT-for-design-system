@@ -1,19 +1,31 @@
 import { useState } from "react";
-import { SettingsComponent, SettingsInput, SettingButtons, SettingsTitle } from "./Settings.style.ts";
-import { apiKeyStoreManager, encryptKey } from "../../../../utils/keyManage.ts";
+import {
+  SettingsComponent,
+  SettingsInput,
+  SettingButtons,
+  SettingsTitle,
+} from "./Settings.style.ts";
+import { apiKeyStoreManager } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
 import SelectBox from "../../../../components/SelectBox.tsx";
 import { SettingProps } from "../../../../types/type.ts";
+import { useApiKey } from "../../../../hook/useApiKey.tsx";
 
-const Settings = ({ modelOptions, inputKey, setInputKey, isApiKey, setApiKey, model, setModel }: SettingProps) => {
+const Settings = ({ modelOptions, model, setModel }: SettingProps) => {
+  const {
+    isApiKey,
+    inputKey,
+    setInputKey,
+    handleSettingApiKey,
+    handleResetApiKey,
+  } = useApiKey();
   const [inputType, setInputType] = useState<string>("password");
 
   // 임시키 사용
   const handelTemporaryApiKey = () => {
-    setInputKey("*".repeat(apiKeyStoreManager.getTemporaryAPIKey().length));
-    setApiKey(true);
-    apiKeyStoreManager.setKey(encryptKey(apiKeyStoreManager.getTemporaryAPIKey()));
+    const temporaryApiKey = apiKeyStoreManager.getTemporaryAPIKey();
+    handleSettingApiKey(temporaryApiKey);
   };
 
   // 입력한 api key 저장
@@ -24,17 +36,7 @@ const Settings = ({ modelOptions, inputKey, setInputKey, isApiKey, setApiKey, mo
       setInputKey("");
       return;
     }
-    setInputKey("*".repeat(inputKey.length));
-    setApiKey(true);
-    setInputType("password");
-    apiKeyStoreManager.setKey(encryptKey(filterApiKey));
-  };
-
-  // api key 초기화
-  const handleResetApiKey = () => {
-    setApiKey(false);
-    setInputKey("");
-    apiKeyStoreManager.setKey("");
+    handleSettingApiKey(filterApiKey);
   };
 
   // input type 변경
