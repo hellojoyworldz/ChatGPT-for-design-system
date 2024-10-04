@@ -18,6 +18,7 @@ import Message from "./components/Message/Message.tsx";
 import InputText from "../../components/InputText.tsx";
 import Button from "../../components/Button.tsx";
 import { useImageUpload } from "../../hook/useImageUpload.tsx";
+import { useLocalStorageMessage } from "../../hook/useLocalStorageMessage.tsx";
 
 const Chat = ({ as, className }: ChatProps) => {
   const {
@@ -32,7 +33,8 @@ const Chat = ({ as, className }: ChatProps) => {
     handleFileChange,
     removeImage,
   } = useImageUpload();
-  const [messages, setMessages] = useState<MessageProps[]>([]);
+  const { messages, setMessages, handleReset } = useLocalStorageMessage();
+
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -53,23 +55,6 @@ const Chat = ({ as, className }: ChatProps) => {
   useEffect(() => {
     scrollBottom();
   }, [messages, streamingMessage, input]);
-
-  // localStorage에 저장된 messages 가져오기
-  useEffect(() => {
-    const savedMessages = localStorage.getItem("chatMessages");
-    if (savedMessages) {
-      setMessages(
-        JSON.parse(savedMessages).map((msg: MessageProps) => ({
-          ...msg,
-        }))
-      );
-    }
-  }, []);
-
-  // localStorage에 messages 저장
-  useEffect(() => {
-    localStorage.setItem("chatMessages", JSON.stringify(messages));
-  }, [messages]);
 
   // 이미지를 base64로 변환하는 함수
   const convertToBase64 = (file: File): Promise<string> => {
@@ -92,26 +77,23 @@ const Chat = ({ as, className }: ChatProps) => {
     [inputtingTimer]
   );
 
-  // messages를 삭제하고 localStorage를 초기화
-  const handleReset = useCallback(() => {
-    setMessages([]);
-    localStorage.removeItem("chatMessages");
-  }, []);
-
   // setMessages에 message를 추가하는 함수
-  const makeSetMessage = useCallback((role: MessageProps["role"], content: ContentProps[]) => {
-    const newMessage: MessageProps = {
-      role,
-      content,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
+  const makeSetMessage = useCallback(
+    (role: MessageProps["role"], content: ContentProps[]) => {
+      const newMessage: MessageProps = {
+        role,
+        content,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
 
-    setMessages((prev) => [...prev, newMessage]);
-    return newMessage;
-  }, []);
+      setMessages((prev) => [...prev, newMessage]);
+      return newMessage;
+    },
+    [setMessages]
+  );
 
   // 입력한 메세지를 전송하고 응답을 받아 messages에 추가
   const handleSendMessage = useCallback(
@@ -170,7 +152,7 @@ const Chat = ({ as, className }: ChatProps) => {
         }
       }
     },
-    [isLoading, messages, makeSetMessage, images]
+    [isLoading, messages, makeSetMessage, images, setImages]
   );
 
   return (
