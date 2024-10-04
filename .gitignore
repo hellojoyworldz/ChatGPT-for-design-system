@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 *.zip
+
+# env
+.env
+.evn.local
+.env.dev
