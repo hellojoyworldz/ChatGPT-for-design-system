@@ -1,14 +1,6 @@
-import { ElementType, HTMLAttributes } from "react";
+import { BoxComponentProps } from "../types/type";
 
-interface BoxComponentProps extends HTMLAttributes<HTMLHtmlElement> {
-  as?: ElementType;
-}
-
-const BoxComponent = ({
-  as: Component = "div",
-  children,
-  ...props
-}: BoxComponentProps) => {
+const BoxComponent = ({ as: Component = "div", children, ...props }: BoxComponentProps) => {
   return <Component {...props}>{children}</Component>;
 };
 

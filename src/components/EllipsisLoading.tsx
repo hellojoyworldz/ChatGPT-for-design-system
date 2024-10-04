@@ -1,6 +1,6 @@
-import { ElementType, HTMLAttributes } from "react";
 import styled from "styled-components";
 import BoxComponent from "./BoxComponent.tsx";
+import { EllipsisLoadingProps } from "../types/type.ts";
 
 const EllipsisLoadingComponent = styled(BoxComponent)<{ role?: string }>`
   display: inline-block;
@@ -49,11 +49,6 @@ const EllipsisLoadingComponent = styled(BoxComponent)<{ role?: string }>`
     }
   }
 `;
-
-interface EllipsisLoadingProps extends HTMLAttributes<HTMLElement> {
-  as?: ElementType;
-  role?: string;
-}
 
 const EllipsisLoading = ({ as = "div", ...props }: EllipsisLoadingProps) => {
   return (

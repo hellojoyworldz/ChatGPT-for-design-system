@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import { ButtonProps } from "../types/type";
 
 const ButtonComponent = styled.button`
   padding: 0 12px;
@@ -16,19 +16,7 @@ const ButtonComponent = styled.button`
   }
 `;
 
-interface ButtonComponentProps extends HTMLAttributes<HTMLButtonElement> {
-  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
-  children?: ReactNode;
-  onClick?: (() => void) | (() => Promise<void>);
-  className?: string;
-  disabled?: boolean;
-}
-
-const Button = ({
-  type = "button",
-  children,
-  ...props
-}: ButtonComponentProps) => {
+const Button = ({ type = "button", children, ...props }: ButtonProps) => {
   return (
     <ButtonComponent type={type} {...props}>
       {children}

@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { HTMLAttributes } from "react";
-import { ModelOptionProps } from "../types/type.ts";
+import { SelectBoxProps } from "../types/type.ts";
 
 const SelectBoxComponent = styled.select`
   -moz-appearance: none;
@@ -15,18 +14,10 @@ const SelectBoxComponent = styled.select`
   box-sizing: border-box;
 `;
 
-interface SelectBoxProps extends HTMLAttributes<HTMLElement> {
-  options: ModelOptionProps[];
-  model: string;
-  setModel: (value: string) => void;
-}
 const SelectBox = ({ options, model, setModel }: SelectBoxProps) => {
   return (
     <>
-      <SelectBoxComponent
-        value={model}
-        onChange={(e) => setModel(e.target.value)}
-      >
+      <SelectBoxComponent value={model} onChange={(e) => setModel(e.target.value)}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.title}

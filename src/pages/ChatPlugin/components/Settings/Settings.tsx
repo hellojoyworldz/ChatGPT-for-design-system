@@ -1,29 +1,13 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SettingsComponent, SettingsInput, SettingButtons, SettingsTitle } from "./Settings.style.ts";
 import { settingModel } from "../../../../utils/api.ts";
 import { apiKeyStoreManager, encryptKey } from "../../../../utils/keyManage.ts";
 import Title from "../../../../components/Title.tsx";
 import InputText from "../../../../components/InputText.tsx";
 import SelectBox from "../../../../components/SelectBox.tsx";
-import { ModelOptionProps } from "../../../../types/type.ts";
+import { SettingProps } from "../../../../types/type.ts";
 
-const Settings = ({
-  modelOptions,
-  inputKey,
-  setInputKey,
-  isApiKey,
-  setApiKey,
-  model,
-  setModel,
-}: {
-  modelOptions: ModelOptionProps[];
-  inputKey: string;
-  setInputKey: Dispatch<SetStateAction<string>>;
-  isApiKey: boolean;
-  setApiKey: Dispatch<SetStateAction<boolean>>;
-  model: string;
-  setModel: Dispatch<SetStateAction<string>>;
-}) => {
+const Settings = ({ modelOptions, inputKey, setInputKey, isApiKey, setApiKey, model, setModel }: SettingProps) => {
   const [inputType, setInputType] = useState<string>("password");
 
   // 임시키 사용
