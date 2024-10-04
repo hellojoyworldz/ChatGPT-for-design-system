@@ -40,7 +40,9 @@ const Chat = ({ as, className }: ChatProps) => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isInputting, setInputting] = useState<boolean>(false);
   const [isStreaming, setStreaming] = useState<boolean>(false);
-  const [inputtingTimer, setInputtingTimer] = useState<NodeJS.Timeout | null>(null);
+  const [inputtingTimer, setInputtingTimer] = useState<NodeJS.Timeout | null>(
+    null
+  );
 
   const messageEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -176,12 +178,32 @@ const Chat = ({ as, className }: ChatProps) => {
       <ChatBody>
         <ChatMessage>
           {messages.map((message, idx) => (
-            <Message key={idx} role={message.role} content={message.content} timestamp={message.timestamp} />
+            <Message
+              key={idx}
+              role={message.role}
+              content={message.content}
+              timestamp={message.timestamp}
+            />
           ))}
-          {isStreaming && <Message role="assistant" content={[{ type: "text", text: streamingMessage }]} />}
-          {isLoading && <Message role="assistant" isLoading={isLoading} content={[{ type: "text", text: "로딩중" }]} />}
+          {isStreaming && (
+            <Message
+              role="assistant"
+              content={[{ type: "text", text: streamingMessage }]}
+            />
+          )}
+          {isLoading && (
+            <Message
+              role="assistant"
+              isLoading={isLoading}
+              content={[{ type: "text", text: "로딩중" }]}
+            />
+          )}
           {isInputting && (
-            <Message role="user" isInputting={isInputting} content={[{ type: "text", text: "입력중" }]} />
+            <Message
+              role="user"
+              isInputting={isInputting}
+              content={[{ type: "text", text: "입력중" }]}
+            />
           )}
 
           <div ref={messageEndRef} />
@@ -194,7 +216,10 @@ const Chat = ({ as, className }: ChatProps) => {
                 {images.map((image, idx) => (
                   <ImageListItem key={idx}>
                     <img src={image.preview} alt="" />
-                    <button type="button" onClick={() => removeImage(idx)} className="close">
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="close">
                       ❌<span className="readonly">삭제</span>
                     </button>
                   </ImageListItem>
@@ -205,21 +230,35 @@ const Chat = ({ as, className }: ChatProps) => {
           {isDragging ? (
             <ImageBox>
               <ImageDragZone>
-                <strong className="title">🏞️ 이미지를 가져다 놓으세요 🏞️</strong>
+                <strong className="title">
+                  🏞️ 이미지를 가져다 놓으세요 🏞️
+                </strong>
                 <p className="text">
                   형식: 이미지 / 용량: {MAX_SIZE}mb 까지 / 개수: {MAX_IMAGES}개
                 </p>
               </ImageDragZone>
             </ImageBox>
           ) : null}
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} multiple accept="image/*" hidden />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            multiple
+            accept="image/*"
+            hidden
+          />
           <MessageInput>
             <InputText
               placeholder={"메세지를 입력하세요"}
               value={input}
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+                if (
+                  e.key === "Enter" &&
+                  !e.ctrlKey &&
+                  !e.shiftKey &&
+                  !e.altKey
+                ) {
                   if (e.keyCode === 229) return;
                   e.preventDefault();
                   handleSendMessage(input);
@@ -228,13 +267,16 @@ const Chat = ({ as, className }: ChatProps) => {
             />
             <MessageInputButton>
               {!(images.length >= MAX_IMAGES) ? (
-                <Button onClick={() => fileInputRef.current?.click()}>
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isLoading}>
                   📎<span className="readonly">이미지첨부</span>
                 </Button>
               ) : null}
-              <Button onClick={() => handleSendMessage(input)} disabled={isLoading}>
+              <Button
+                onClick={() => handleSendMessage(input)}
+                disabled={isLoading}>
                 보내기
-                {/*{isLoading ? "전송중..." : "보내기"}*/}
               </Button>
             </MessageInputButton>
           </MessageInput>
