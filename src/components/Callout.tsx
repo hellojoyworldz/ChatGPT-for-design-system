@@ -1,6 +1,6 @@
-import { HTMLAttributes, ElementType } from "react";
 import styled from "styled-components";
 import BoxComponent from "./BoxComponent.tsx";
+import { CalloutProps } from "../types/type";
 
 const CalloutComponent = styled(BoxComponent)<{ role?: string }>`
   margin-top: 5px;
@@ -39,10 +39,6 @@ const CalloutComponent = styled(BoxComponent)<{ role?: string }>`
   }
 `;
 
-interface CalloutProps extends HTMLAttributes<HTMLElement> {
-  as?: ElementType;
-  role?: string;
-}
 const Callout = ({ as = "div", children, ...props }: CalloutProps) => {
   return (
     <CalloutComponent as={as} {...props}>

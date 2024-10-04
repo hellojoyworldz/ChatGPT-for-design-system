@@ -1,6 +1,6 @@
-import { HTMLAttributes, ChangeEvent, HTMLInputTypeAttribute } from "react";
 import styled from "styled-components";
 import BoxComponent from "./BoxComponent.tsx";
+import { InputTextProps } from "../types/type.ts";
 
 const InputComponent = styled(BoxComponent)`
   padding: 10px 16px;
@@ -19,14 +19,6 @@ const InputComponent = styled(BoxComponent)`
     background: #f2f2f2;
   }
 `;
-
-interface InputTextProps extends HTMLAttributes<HTMLInputElement> {
-  placeholder?: string;
-  value?: string;
-  readOnly?: boolean;
-  type?: HTMLInputTypeAttribute;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-}
 
 const InputText = ({ type = "text", ...props }: InputTextProps) => {
   return <InputComponent as="input" type={type} {...props} />;

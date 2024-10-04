@@ -1,29 +1,10 @@
-import { HTMLAttributes } from "react";
 import ReactMarkdown from "react-markdown";
 import { MessageProps } from "../../../../types/type.ts";
-import {
-  MessageComponent,
-  MessageProfileComponent,
-  MessageImageList,
-  MessageImage,
-} from "./Message.style.ts";
+import { MessageComponent, MessageProfileComponent, MessageImageList, MessageImage } from "./Message.style.ts";
 import Callout from "../../../../components/Callout.tsx";
 import EllipsisLoading from "../../../../components/EllipsisLoading.tsx";
 
-type ExtendedMessageProps = Omit<HTMLAttributes<HTMLDivElement>, "content"> &
-  MessageProps & {
-    isInputting?: boolean;
-    isLoading?: boolean;
-  };
-
-const Message = ({
-  content,
-  className,
-  role,
-  isInputting,
-  isLoading,
-  timestamp,
-}: ExtendedMessageProps) => {
+const Message = ({ content, className, role, isInputting, isLoading, timestamp }: MessageProps) => {
   const contentText = content.filter((item) => item.type === "text");
   const contentImages = content.filter((item) => item.type === "image_url");
 
@@ -40,11 +21,7 @@ const Message = ({
         <>
           {contentText.map((item, idx) => (
             <Callout key={idx} role={role}>
-              {role === "user" ? (
-                item.text
-              ) : (
-                <ReactMarkdown>{item.text || ""}</ReactMarkdown>
-              )}
+              {role === "user" ? item.text : <ReactMarkdown>{item.text || ""}</ReactMarkdown>}
             </Callout>
           ))}
 
